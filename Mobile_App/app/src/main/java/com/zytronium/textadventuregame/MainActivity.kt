@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var background: ConstraintLayout
 
     private lateinit var firestore: FirebaseFirestore
-    private var currentPath: String = "StoryA:Menu"
+    private var currentPath: String = "power:0"
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +38,10 @@ class MainActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         fetchStoryData()
-
     }
 
     private fun fetchStoryData() {
-        firestore.collection("stories").document("StoryA").get()
+        firestore.collection("stories").document("Sci fi").get()
             .addOnSuccessListener { snapshot ->
                 // Check if the document exists
                 if (snapshot.exists()) {
@@ -60,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     println("Error: Document does not exist")
                 }
+//                printStoryMaps() // debug print
             }
             .addOnFailureListener { exception ->
                 // Handle the failure
@@ -97,11 +97,8 @@ class MainActivity : AppCompatActivity() {
                                 "text: \"${event.storyText}\""
                     )
                 }
-
                 println('\n')
-
             }
-
         }
         println("\n--------------------\n")
     }
@@ -189,7 +186,7 @@ class MainActivity : AppCompatActivity() {
     private fun getDefaultOptions(type: StoryEventType): Array<Pair<String?, String?>?> {
         return when (type) {
             StoryEventType.GoodEnding, StoryEventType.BadEnding, StoryEventType.NeutralEnding, StoryEventType.Error -> arrayOf(
-                "Main Menu" to "StoryA:Menu",
+                "Main Menu" to "power:0",
                 "Restart" to currentStoryRoot(),
                 if (type != StoryEventType.Error) "Go Back" to currentPath.dropLast(1) else null to null
             )
