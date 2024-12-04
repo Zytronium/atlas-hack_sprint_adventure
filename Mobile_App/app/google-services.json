@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721830400936",
+    "project_id": "text-adventure-55f7e",
+    "storage_bucket": "text-adventure-55f7e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721830400936:android:9fd9864ab95cdf0f17439d",
+        "android_client_info": {
+          "package_name": "com.zytronium.textadventuregame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApAmNQe5hNW4hu5wMSvxKS7Ss7ARFmMnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
