@@ -120,26 +120,6 @@ input String_Filter {
   `LIKE '%value'`
   """
   endsWith: String
-  """
-  Match if field value matches the provided pattern. See `String_Pattern` for
-  more details.
-  """
-  pattern: String_Pattern
-}
-
-"""
-The pattern match condition on a string. Specify either like or regex.
-https://www.postgresql.org/docs/current/functions-matching.html
-"""
-input String_Pattern {
-  "Match using the provided `LIKE` expression."
-  like: String
-  "Match using the provided POSIX regular expression."
-  regex: String
-  "When true, ignore case when matching."
-  ignoreCase: Boolean
-  "When true, invert the match result. Equivalent to `NOT LIKE` or `!~`."
-  invert: Boolean
 }
 
 "Query filter criteris for `[String!]` scalar fields."
