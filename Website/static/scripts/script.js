@@ -1,14 +1,3 @@
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
-  authDomain: "text-adventure-55f7e.firebaseapp.com",
-  projectId: "text-adventure-55f7e",
-  storageBucket: "text-adventure-55f7e.firebasestorage.app",
-  messagingSenderId: "721830400936",
-  appId: "1:721830400936:web:ef55d79e24c4024217439d",
-  measurementId: "G-Y55FLGNH5V"
-};
-
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
