@@ -8,17 +8,11 @@
     "source": "dataconnect"
   },
   "hosting": {
-    "public": "y",
+    "public": "root",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   }
 }
