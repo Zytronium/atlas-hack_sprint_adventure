@@ -1,0 +1,87 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".MainMenuActivity">
+
+    <!-- Container for text and button (foreground elements) -->
+
+    <!-- Background Video -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.225">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/landing_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/orbitron"
+            android:gravity="center"
+            android:text="@string/main_menu_game_title"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:shadowColor="@color/highlighted_text2"
+            android:shadowRadius="18"/>
+
+        <!-- Subtitle/Description -->
+        <TextView
+            android:id="@+id/landing_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="@font/orbitron"
+            android:gravity="center"
+            android:text="@string/main_menu_subtitle"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
+
+        <!--        -->
+        <Space
+            android:layout_height="65dp"
+            android:layout_width="0dp"/>
+
+        <!-- Button -->
+        <Button
+            android:id="@+id/start_game_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/start_game_btn_color"
+            android:gravity="center"
+            android:onClick="playGame"
+            android:padding="20dp"
+            android:text="@string/start_button_text"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            app:cornerRadius="18dp" />
+
+    </LinearLayout>
+
+    <com.zytronium.textadventuregame.ScaledVideoView
+        android:id="@+id/backgroundAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/background_main_menu"
+        android:elevation="-1dp"
+        android:translationX="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
