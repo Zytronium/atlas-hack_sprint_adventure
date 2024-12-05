@@ -1,0 +1,11 @@
+flask
+firebase-admin
+flask-cors
+pyjwt
+python-dotenv
+
+## Setup
+1. Create virtual environment
+2. Install dependencies:
+3. Configure `.env` file
+4. Run application:

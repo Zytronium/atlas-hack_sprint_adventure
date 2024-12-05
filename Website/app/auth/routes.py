@@ -9,11 +9,9 @@ def register():
     try:
         data = request.json
         
-        # Validate input
         if not data or not data.get('email') or not data.get('password'):
             return jsonify({'error': 'Missing email or password'}), 400
 
-        # Optional additional data
         additional_data = {k: v for k, v in data.items() if k not in ['email', 'password']}
         
         user_id = auth_service.register_user(

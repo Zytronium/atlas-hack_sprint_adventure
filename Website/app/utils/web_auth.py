@@ -1,14 +1,19 @@
 import jwt
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, current_app
+from app.services.firebase_service import FirebaseService
 from app.config import Config
-from app.services.firebase import FirebaseService
 
-def token_required(f):
+def web_token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        # Check Origin
+        origin = request.headers.get('Origin')
+        if origin != Config.ALLOWED_WEBSITE:
+            return jsonify({'error': 'Unauthorized website origin'}), 403
+
+        # Check for Authorization token
         token = None
-        # Check if token is in request headers
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split(" ")[1]
         
@@ -17,14 +22,22 @@ def token_required(f):
         
         try:
             # Decode the token
-            data = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
+            data = jwt.decode(
+                token, 
+                current_app.config['SECRET_KEY'], 
+                algorithms=[Config.JWT_ALGORITHM]
+            )
             
-            # Verify user exists (optional additional check)
-            db = FirebaseService.get_db(Config.FIREBASE_CREDENTIALS)
+            # Optional: Additional verification with Firebase
+            db = FirebaseService.get_db()
             current_user = db.collection('users').document(data['user_id']).get()
             
             if not current_user.exists:
                 return jsonify({'error': 'User not found'}), 401
+            
+            # Attach user information to the request if needed
+            request.user_id = data['user_id']
+        
         except jwt.ExpiredSignatureError:
             return jsonify({'error': 'Token has expired'}), 401
         except jwt.InvalidTokenError:

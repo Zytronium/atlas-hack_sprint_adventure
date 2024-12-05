@@ -1,0 +1,25 @@
+integration for api calls:
+
+fetch('https://your-api-domain.com/auth/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Origin': 'https://yourwebsite.com'
+  },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'password'
+  })
+})
+
+
+for authenticated request
+
+
+fetch('https://your-api-domain.com/api/some-endpoint', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${your_jwt_token}`,
+    'Origin': 'https://yourwebsite.com'
+  }
+})

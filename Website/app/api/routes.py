@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.services.firebase import FirebaseService
-from app.api.utils import token_required
+from app.services.firebase_service import FirebaseService
+from app.utils.web_auth import web_token_required
 from app.config import Config
 from firebase_admin import firestore
 
@@ -8,7 +8,7 @@ api_bp = Blueprint('api', __name__)
 db = FirebaseService.get_db(Config.FIREBASE_CREDENTIALS)
 
 @api_bp.route('/<collection>', methods=['GET'])
-@token_required
+@web_token_required
 def get_documents(collection):
     try:
         # Pagination parameters
@@ -18,7 +18,7 @@ def get_documents(collection):
         # Filtering parameters
         filters = request.args.get('filters', {})
         if isinstance(filters, str):
-            filters = eval(filters)  # Use with caution in production
+            filters = eval(filters)  # Caution: use safely in production
         
         # Sorting
         sort_by = request.args.get('sort_by', 'created_at')
@@ -48,4 +48,45 @@ def get_documents(collection):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Similar methods for POST, PUT, DELETE as in previous example
+@api_bp.route('/<collection>', methods=['POST'])
+@web_token_required
+def create_document(collection):
+    try:
+        data = request.json
+        data['created_at'] = firestore.SERVER_TIMESTAMP
+        
+        doc_ref = db.collection(collection).document()
+        doc_ref.set(data)
+        
+        return jsonify({
+            'message': 'Document created successfully',
+            'id': doc_ref.id
+        }), 201
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_bp.route('/<collection>/<doc_id>', methods=['PUT'])
+@web_token_required
+def update_document(collection, doc_id):
+    try:
+        data = request.json
+        data['updated_at'] = firestore.SERVER_TIMESTAMP
+        
+        doc_ref = db.collection(collection).document(doc_id)
+        doc_ref.update(data)
+        
+        return jsonify({'message': 'Document updated successfully'}), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_bp.route('/<collection>/<doc_id>', methods=['DELETE'])
+@web_token_required
+def delete_document(collection, doc_id):
+    try:
+        db.collection(collection).document(doc_id).delete()
+        return jsonify({'message': 'Document deleted successfully'}), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
