@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Text Adventure Game</string>
-    <string name="story_text">Loading...</string>
+    <string name="app_name">Hack Sprint Adventure</string>
+    <string name="story_text">Loading…</string>
 </resources>

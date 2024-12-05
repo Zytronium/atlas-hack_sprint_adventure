@@ -4,3 +4,4 @@ __pycache__/
 venv/
 *.log
 firebase_credentials.json
+.idea/

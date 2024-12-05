@@ -5,16 +5,14 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="background_normal">#F7A5BCC2</color>
-    <color name="text_on_normal">#131314</color>
-    <color name="background_good">#F7A7CDA0</color>
-    <color name="text_on_good">#131314</color>
-    <color name="good_text">#20AB07</color>
-    <color name="background_bad">#F7CFA1A1</color>
-    <color name="text_on_bad">#131314</color>
-    <color name="bad_text">#CD1313</color>
-    <color name="background_win">#F772D860</color>
-    <color name="background_loose">#F7C83E3E</color>
+
+    <color name="choice_btn_color">#80FF5722</color>
+
+    <color name="background_normal">#1A000000</color>
+    <color name="background_good">#401FCC00</color>
+    <color name="background_bad">#40CF0000</color>
+    <color name="background_win">#5400D900</color>
+    <color name="background_loose">#54C70000</color>
     <color name="highlighted_text1">#F7FF00</color>
     <color name="highlighted_text2">#00AEFF</color>
     <color name="highlighted_text3">#00FF40</color>

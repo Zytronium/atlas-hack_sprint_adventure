@@ -1,10 +1,16 @@
 package com.zytronium.textadventuregame
 
+import android.net.Uri.parse
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
+import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var option5Btn: TextView
     private lateinit var option6Btn: TextView
     private lateinit var background: ConstraintLayout
+    private lateinit var backgroundAnimation: ScaledVideoView
 
     private lateinit var firestore: FirebaseFirestore
     private var currentPath: String = "power:0"
@@ -33,7 +40,21 @@ class MainActivity : AppCompatActivity() {
         option4Btn = findViewById(R.id.button4)
         option5Btn = findViewById(R.id.button5)
         option6Btn = findViewById(R.id.button6)
+        backgroundAnimation = findViewById(R.id.backgroundAnimation)
         background = findViewById(R.id.main)
+
+        fullscreenWithNoCutout()
+
+        backgroundAnimation.setOnPreparedListener { mediaPlayer ->
+            backgroundAnimation.setVideoDimensions(mediaPlayer.videoWidth, mediaPlayer.videoHeight)
+            mediaPlayer.isLooping = true
+            backgroundAnimation.requestLayout()
+        }
+
+        backgroundAnimation.setVideoURI(parse("android.resource://" + packageName + "/" + R.raw.background))
+//        backgroundAnimation.setOnCompletionListener { backgroundAnimation.start() }
+//        backgroundAnimation.setOnErrorListener { /* handle error */ }
+        backgroundAnimation.start()
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -112,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateBackground() {
-        background.setBackgroundColor(when(getCurrentEvent()?.type) {
+        backgroundAnimation.setBackgroundColor(when(getCurrentEvent()?.type) {
             StoryEventType.Bad, StoryEventType.Error -> getColor(R.color.background_bad)
             StoryEventType.Good -> getColor(R.color.background_good)
             StoryEventType.BadEnding -> getColor(R.color.background_loose)
@@ -192,6 +213,19 @@ class MainActivity : AppCompatActivity() {
             )
             else -> arrayOfNulls(6) // Normal flow
         }
+    }
+
+    private fun fullscreenWithNoCutout() { // * also requires change in themes file
+        val windowInsetsController =
+            ViewCompat.getWindowInsetsController(window.decorView) ?: return
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.hide(WindowInsetsCompat.Type.displayCutout()) //remove this if you still want the cutout
+        window.setFlags( // needed because else it will show the cutout as white
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
     }
 
     private fun currentStoryRoot(): String = currentPath.split(":")[0] + ":0"
