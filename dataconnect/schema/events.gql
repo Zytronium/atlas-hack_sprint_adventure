@@ -1,0 +1,35 @@
+type Event {
+  id: ID
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [Option]
+}
+
+type Option {
+  id: ID
+  text: String!
+  nextEventId: ID
+}
+
+input EventInput {
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [OptionInput]
+}
+
+input OptionInput {
+  text: String!
+  nextEventId: ID
+}
+
+input EventUpdateInput {
+  title: String
+  type: String
+  storyText: String
+  path: String
+  options: [OptionInput]
+}
