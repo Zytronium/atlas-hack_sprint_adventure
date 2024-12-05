@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, render_template
 
 routes = Blueprint('routes', __name__)
 
@@ -49,3 +49,8 @@ def handle_player_progress():
         progress_ref = db.collection('player_progress').document(player_id)
         progress_ref.set(progress_data)
         return jsonify({"message": "Player progress updated successfully"}), 201
+   
+@routes.route('/')
+def index():
+    print("Hello World")
+    return render_template('index.html')
