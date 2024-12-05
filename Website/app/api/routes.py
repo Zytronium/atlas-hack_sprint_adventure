@@ -1,6 +1,14 @@
-from flask import Blueprint, request, jsonify, current_app, render_template
+from flask import Blueprint, request, jsonify, current_app, send_from_directory
+import os
 
 routes = Blueprint('routes', __name__)
+
+# Serve index.html file
+@routes.route('/')
+def serve_index():
+    # Path to the folder where your 'index.html' is located
+    index_file = os.path.join(current_app.root_path, 'static', 'index.html')
+    return send_from_directory(os.path.dirname(index_file), 'index.html')
 
 @routes.route('/game-state', methods=['GET', 'POST'])
 def handle_game_state():
@@ -49,8 +57,3 @@ def handle_player_progress():
         progress_ref = db.collection('player_progress').document(player_id)
         progress_ref.set(progress_data)
         return jsonify({"message": "Player progress updated successfully"}), 201
-   
-@routes.route('/')
-def index():
-    print("Hello World")
-    return render_template('index.html')
