@@ -18,7 +18,7 @@ const firebaseConfig = {
     const landingPage = document.getElementById("landing-page");
     const gameplayPage = document.getElementById("gameplay-page");
     const gameText = document.getElementById("game-text");
-    const choiceButtons = document.querySelectorAll(".choice-btn");
+    const choicesContainer = document.getElementById("choices");
   
     // Fetch and display a game state
     async function loadGameState(path) {
@@ -43,15 +43,19 @@ const firebaseConfig = {
     function updateGameUI(gameState) {
       gameText.textContent = gameState.storyText;
   
-      choiceButtons.forEach((button, index) => {
-        if (gameState.options && gameState.options[index]) {
-          button.textContent = gameState.options[index];
-          button.onclick = () => loadGameState(gameState.options[index].next_state);
-          button.style.display = "block";
-        } else {
-          button.style.display = "none";
-        }
-      });
+      // Clear previous buttons
+      choicesContainer.innerHTML = "";
+  
+      // Dynamically create buttons for choices
+      if (gameState.options) {
+        gameState.options.forEach((option, index) => {
+          const button = document.createElement("button");
+          button.classList.add("choice-btn");
+          button.textContent = option.text;
+          button.onclick = () => loadGameState(option.next_state);
+          choicesContainer.appendChild(button);
+        });
+      }
   
       // Handle endings
       if (gameState.type) {

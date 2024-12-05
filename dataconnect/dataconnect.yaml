@@ -1,5 +1,5 @@
 specVersion: "v1beta"
-serviceId: "atlas-hack_sprint_adventure-2"
+serviceId: "atlas-hack_sprint_adventure"
 location: "us-central1"
 schema:
   source: "./schema"
@@ -7,6 +7,6 @@ schema:
     postgresql:
       database: "fdcdb"
       cloudSql:
-        instanceId: "atlas-hack_sprint_adventure-2-fdc"
+        instanceId: "atlas-hack_sprint_adventure-fdc"
       # schemaValidation: "COMPATIBLE"
 connectorDirs: ["./connector"]
