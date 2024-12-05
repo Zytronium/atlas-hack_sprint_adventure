@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Adventures</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="/static/images/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Landing Page -->
+    <section id="landing-page">
+        <div class="container">
+            <h1>DJK Text Adventures</h1>
+            <p>Your journey begins in a galaxy far, far away...</p>
+            <button id="start-game">Enter the Adventure</button>
+        </div>
+    </section>
+
+    <!-- Gameplay Page -->
+    <section id="gameplay-page" class="hidden">
+        <div class="game-container">
+            <div id="game-text">Welcome to the game! Your choices will shape your destiny.</div>
+            <div id="choices">
+                <button class="choice-btn">Option 1</button>
+                <button class="choice-btn">Option 2</button>
+                <button class="choice-btn">Option 3</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
