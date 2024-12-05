@@ -3,7 +3,7 @@
 /* Global Styles */
 body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Orbitron', sans-serif;
     background: #000;
     color: #fff;
     display: flex;
@@ -11,6 +11,16 @@ body {
     align-items: center;
     height: 100vh;
     overflow: hidden;
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 400 to 900
+
+.orbitron-<uniquifier> {
+  font-family: "Orbitron", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style; normal;
 }
 
 #background-video {
@@ -30,7 +40,7 @@ body {
 /* Landing Page Styles */
 #landing-page {
     text-align: center;
-    background: url('../static/images/background.mp4') no-repeat center center fixed;
+    background: url('./static/images/background.mp4') no-repeat center center fixed;
     background-size: cover;
     width: 100%;
     height: 100%;
