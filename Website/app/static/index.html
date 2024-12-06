@@ -36,26 +36,27 @@
     <!-- JavaScript -->
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-          apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
-          authDomain: "text-adventure-55f7e.firebaseapp.com",
-          projectId: "text-adventure-55f7e",
-          storageBucket: "text-adventure-55f7e.firebasestorage.app",
-          messagingSenderId: "721830400936",
-          appId: "1:721830400936:web:ef55d79e24c4024217439d",
-          measurementId: "G-Y55FLGNH5V"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
+  authDomain: "text-adventure-55f7e.firebaseapp.com",
+  databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
+  projectId: "text-adventure-55f7e",
+  storageBucket: "text-adventure-55f7e.firebasestorage.app",
+  messagingSenderId: "721830400936",
+  appId: "1:721830400936:web:ef55d79e24c4024217439d",
+  measurementId: "G-Y55FLGNH5V"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
       </script>
           <!-- update the version number as needed -->
         <script defer src="/__/firebase/11.0.2/firebase-app-compat.js"></script>

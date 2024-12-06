@@ -1,5 +1,0 @@
-extend type Mutation {
-  createEvent(input: EventInput!): Event
-  updateEvent(id: ID!, input: EventUpdateInput!): Event
-  deleteEvent(id: ID!): Boolean
-}

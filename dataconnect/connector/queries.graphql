@@ -1,5 +1,0 @@
-extend type Query {
-  getEvent(id: ID!): Event
-  getAllEvents: [Event]
-  getEventsByType(type: String!): [Event]
-}
