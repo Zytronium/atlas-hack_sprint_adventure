@@ -119,3 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGameState("power:0"); // Start at the initial game state
   });
 });
+const { onRequest } = require("firebase-functions/v2/https");
+
+exports.sayHello = onRequest(
+  { cors: [/127.0.0.1$/, /zytronium\.github\.io$/] },
+  (req, res) => {
+    res.status(200).send("Hello world!");
+  }
+);
