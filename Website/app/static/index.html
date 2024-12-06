@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atlas Adventures</title>
-    <link rel="stylesheet" href="./Website/static/style/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <title>DJK Text Adventures</title>
+    
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS File -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Background Video -->
-    <video autoplay loop muted playsinline id="background-video">
-        <source src="./Website/static/images/background.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
     <!-- Landing Page -->
-    <section id="landing-page">
+    <section id="landing-page" class="section">
         <div class="container">
             <h1>DJK Text Adventures</h1>
             <p>Your journey begins in a galaxy far, far away...</p>
@@ -26,68 +26,31 @@
     </section>
 
     <!-- Gameplay Page -->
-    <section id="gameplay-page" class="hidden">
+    <section id="gameplay-page" class="section hidden">
         <div class="game-container">
-            <div id="game-text">Welcome to the game! Your choices will shape your destiny.</div>
-            <div id="choices"></div>
+            <div id="game-text">
+                Welcome to the game! Your choices will shape your destiny.
+            </div>
+            <div id="choices">
+                <!-- Dynamic choices will be added here -->
+            </div>
         </div>
     </section>
 
-    <!-- JavaScript -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
+            authDomain: "text-adventure-55f7e.firebaseapp.com",
+            projectId: "text-adventure-55f7e",
+            storageBucket: "text-adventure-55f7e.firebasestorage.app",
+            messagingSenderId: "721830400936",
+            appId: "1:721830400936:web:ef55d79e24c4024217439d",
+            databaseURL: "https://text-adventure-55f7e.firebaseio.com"
+        };
+    </script>
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
-  authDomain: "text-adventure-55f7e.firebaseapp.com",
-  databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
-  projectId: "text-adventure-55f7e",
-  storageBucket: "text-adventure-55f7e.firebasestorage.app",
-  messagingSenderId: "721830400936",
-  appId: "1:721830400936:web:ef55d79e24c4024217439d",
-  measurementId: "G-Y55FLGNH5V"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-      </script>
-          <!-- update the version number as needed -->
-        <script defer src="/__/firebase/11.0.2/firebase-app-compat.js"></script>
-        <!-- include only the Firebase features as you need -->
-        <script defer src="/__/firebase/11.0.2/firebase-auth-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-database-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-firestore-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-functions-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-messaging-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-storage-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-analytics-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-remote-config-compat.js"></script>
-        <script defer src="/__/firebase/11.0.2/firebase-performance-compat.js"></script>
-        <!-- 
-        initialize the SDK after all desired features are loaded, set useEmulator to false
-        to avoid connecting the SDK to running emulators.
-        -->
-        <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-      <script type="module" src="./Website/static/scripts/script.js"></script>
-      <script
-        type="text/JavaScript"
-        src="{{ url_for('website', 'static', 'scripts', filename='script.js') }}"
-        ></script>
-        <script
-        type="text/JavaScript"
-        src="{{ url_for('website', 'static', 'scripts', filename='server.js') }}"
-        ></script>
-        <script
-        type="text/css"
-        src="{{ url_for('website', 'static', 'style', filename='styles.css') }}"
-        ></script>
-        
-    </body>
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
 </html>
