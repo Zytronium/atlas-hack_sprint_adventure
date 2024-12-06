@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DJK Text Adventures</title>
     
-    <!-- Firebase Scripts -->
+    <!-- Firebase Scripts for version 8.x (Non-modular) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="./Website/static/images/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <section id="landing-page" class="section">
         <div class="container">
             <h1>DJK Text Adventures</h1>
@@ -45,9 +48,13 @@
             appId: "1:721830400936:web:ef55d79e24c4024217439d",
             databaseURL: "https://text-adventure-55f7e.firebaseio.com"
         };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
     </script>
 
     <!-- Main Script -->
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>

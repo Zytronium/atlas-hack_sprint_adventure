@@ -1,19 +1,27 @@
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
+  authDomain: "text-adventure-55f7e.firebaseapp.com",
+  databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
+  projectId: "text-adventure-55f7e",
+  storageBucket: "text-adventure-55f7e.firebasestorage.app",
+  messagingSenderId: "721830400936",
+  appId: "1:721830400936:web:ef55d79e24c4024217439d",
+  measurementId: "G-Y55FLGNH5V"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+// Wait for DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Firebase initialized:", firebase.apps.length > 0);
-
-  // Test Firestore connection
-  db.collection("game_states")
-    .get()
-    .then(snapshot => {
-      console.log("Connected to Firestore:", snapshot.size, "documents found");
-    })
-    .catch(error => {
-      console.error("Error connecting to Firestore:", error);
-    });
-
+  // DOM Elements
   const startGameButton = document.getElementById("start-game");
   const landingPage = document.getElementById("landing-page");
   const gameplayPage = document.getElementById("gameplay-page");
@@ -23,92 +31,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // Fetch and display a game state
   async function loadGameState(path) {
     try {
-      const querySnapshot = await db.collection("game_states").where("path", "==", path).get();
+      // Reference to the specific document in the 'stories' collection
+      const docRef = doc(db, "stories", "Sci fi");
+      
+      // Get the document
+      const docSnap = await getDoc(docRef);
 
-      if (querySnapshot.empty) {
-        console.error("No game state found!");
+      if (!docSnap.exists()) {
+        console.error("No game state document found!");
         gameText.textContent = "Game state not found!";
         return;
       }
 
-      const gameState = querySnapshot.docs[0].data();
+      // Get the data from the document
+      const gameStateData = docSnap.data();
+
+      // Find the specific game state based on path
+      const gameState = gameStateData.states.find(state => state.path === path);
+
+      if (!gameState) {
+        console.error(`No game state found for path: ${path}`);
+        gameText.textContent = "Specific game state not found!";
+        return;
+      }
+
       updateGameUI(gameState);
     } catch (error) {
       console.error("Error fetching game state:", error);
       gameText.textContent = "An error occurred while loading the game state.";
     }
-  }
-
-  // Update the UI with the game state
-  function updateGameUI(gameState) {
-    gameText.textContent = gameState.storyText;
-
-    // Clear previous buttons
-    choicesContainer.innerHTML = "";
-
-    // Dynamically create buttons for choices
-    if (gameState.options) {
-      gameState.options.forEach(option => {
-        const button = document.createElement("button");
-        button.classList.add("choice-btn");
-        button.textContent = option.text;
-        button.onclick = () => loadGameState(option.next_state);
-        choicesContainer.appendChild(button);
-      });
-    }
-
-    // Handle endings
-    if (gameState.type) {
-      setTimeout(() => handleEnding(gameState.type), 2000);
-    }
-  }
-
-  // Handle different endings
-  function handleEnding(type) {
-    switch (type) {
-      case "GoodEnding":
-        showWinPage();
-        break;
-      case "BadEnding":
-        showLosePage();
-        break;
-      case "NeutralEnding":
-        showNeutralPage();
-        break;
-      default:
-        console.error("Unknown ending type:", type);
-    }
-  }
-
-  // Display the win page
-  function showWinPage() {
-    gameplayPage.innerHTML = `
-      <h1>Congratulations!</h1>
-      <p>You successfully completed your mission!</p>
-      <img src="win-image.jpg" alt="You Win" />
-      <button id="restart-game">Play Again</button>
-    `;
-    document.getElementById("restart-game").addEventListener("click", () => location.reload());
-  }
-
-  // Display the lose page
-  function showLosePage() {
-    gameplayPage.innerHTML = `
-      <h1>Game Over</h1>
-      <p>Your adventure ends here. Try again?</p>
-      <button id="restart-game">Restart</button>
-    `;
-    document.getElementById("restart-game").addEventListener("click", () => location.reload());
-  }
-
-  // Display the neutral ending page
-  function showNeutralPage() {
-    gameplayPage.innerHTML = `
-      <h1>Interesting Outcome!</h1>
-      <p>Your story takes an unexpected turn. Try again?</p>
-      <button id="restart-game">Restart</button>
-    `;
-    document.getElementById("restart-game").addEventListener("click", () => location.reload());
   }
 
   // Start the game when the "Start Game" button is clicked
@@ -118,11 +69,3 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGameState("power:0"); // Start at the initial game state
   });
 });
-const { onRequest } = require("firebase-functions/v2/https");
-
-exports.sayHello = onRequest(
-  { cors: [/127.0.0.1$/, /zytronium\.github\.io$/] },
-  (req, res) => {
-    res.status(200).send("Hello world!");
-  }
-);
