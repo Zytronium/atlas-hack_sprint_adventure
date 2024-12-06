@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateStory() {
-        val event = getCurrentEvent() ?: notFoundPage()
+        val event = getCurrentEvent()
 
         // Load the data for the current story event into the UI elements (story text & buttons)
         storyTextView.text = event.storyText
@@ -146,21 +146,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateBackground() {
-        backgroundAnimation.setBackgroundColor(when(getCurrentEvent()?.type) {
-            StoryEventType.Bad, StoryEventType.Error -> getColor(R.color.background_bad)
+        backgroundAnimation.setBackgroundColor(when(getCurrentEvent().type) {
+            StoryEventType.Bad -> getColor(R.color.background_bad)
             StoryEventType.Good -> getColor(R.color.background_good)
-            StoryEventType.BadEnding -> getColor(R.color.background_loose)
+            StoryEventType.BadEnding, StoryEventType.Error -> getColor(R.color.background_loose)
             StoryEventType.GoodEnding -> getColor(R.color.background_win)
             StoryEventType.NeutralEnding -> getColor(R.color.background_neutral_ending)
             else -> getColor(R.color.background_normal)
         })
     }
 
-    private fun getCurrentEvent(): StoryEvent? {
+    private fun getCurrentEvent(): StoryEvent {
         val currentStoryPrefix = currentPath.split(":")[0]
         val pathNumber = currentPath.split(":")[1]
 
-        return stories[currentStoryPrefix]?.events?.get(pathNumber)
+        return stories[currentStoryPrefix]?.events?.get(pathNumber) ?: notFoundPage()
     }
 
     private fun getEvent(path: String): StoryEvent? {
