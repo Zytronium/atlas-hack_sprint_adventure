@@ -1,6 +1,8 @@
 package com.zytronium.textadventuregame
 
 import android.animation.ObjectAnimator
+import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri.parse
@@ -8,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.zytronium.textadventuregame.MusicPlayers.clickSound
 import com.zytronium.textadventuregame.MusicPlayers.music
 
-class MainMenuActivity : AppCompatActivity() {
+class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
 
     private lateinit var backgroundAnimation: ScaledVideoView
 
@@ -31,10 +34,18 @@ class MainMenuActivity : AppCompatActivity() {
         fullscreenWithNoCutout(window) // Fullscreen mode
 
         // Initialize music and sound effect players
-        music = MediaPlayer.create(this, R.raw.background_music) // TODO
-        music!!.isLooping = true
-        clickSound = MediaPlayer.create(this, R.raw.click)
+        if (music == null) {
+            music = MediaPlayer.create(this, R.raw.background_music) // TODO
+            music!!.isLooping = true
+            clickSound = MediaPlayer.create(this, R.raw.click)
+
+            // Play the background music
+            playMusic()
+        }
         backgroundAnimation = findViewById(R.id.backgroundAnimation)
+
+        // Register this as a callback to monitor the application's activity lifecycle events, allowing to, for example, pause music when the app looses focus
+        application.registerActivityLifecycleCallbacks(this)
 
         // Setup the background video player
         backgroundAnimation.setOnPreparedListener { mediaPlayer ->
@@ -42,9 +53,6 @@ class MainMenuActivity : AppCompatActivity() {
             mediaPlayer.isLooping = true
             backgroundAnimation.requestLayout()
         }
-
-        // Play the background music
-        playMusic()
 
         // Provide the background video source video and start the video
         backgroundAnimation.setVideoURI(parse("android.resource://" + packageName + "/" + R.raw.background))
@@ -99,5 +107,34 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun playSound() {
         clickSound!!.start()
+    }
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        backgroundAnimation.start()
+        music!!.start()
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+        music!!.pause()
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+//        TODO("Not yet implemented")
     }
 }

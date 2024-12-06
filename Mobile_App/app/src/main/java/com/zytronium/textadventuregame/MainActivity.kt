@@ -1,6 +1,8 @@
 package com.zytronium.textadventuregame
 
 import android.animation.ObjectAnimator
+import android.app.Activity
+import android.app.Application
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri.parse
@@ -17,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.zytronium.textadventuregame.MusicPlayers.clickSound
 import com.zytronium.textadventuregame.MusicPlayers.music
 
-class MainActivity() : AppCompatActivity() {
+class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
     // UI elements
     private lateinit var storyTextView: TextView
     private lateinit var option1Btn: TextView
@@ -54,6 +56,10 @@ class MainActivity() : AppCompatActivity() {
         option6Btn = findViewById(R.id.button6)
         backgroundAnimation = findViewById(R.id.backgroundAnimation)
         background = findViewById(R.id.main)
+
+        // Register this as a callback to monitor the application's activity lifecycle events, allowing to, for example, pause music when the app looses focus
+        application.registerActivityLifecycleCallbacks(this)
+
 
         // Setup the background video player
         backgroundAnimation.setOnPreparedListener { mediaPlayer ->
@@ -233,7 +239,6 @@ class MainActivity() : AppCompatActivity() {
                     if (path == "Main Menu" && button_text == "Main Menu") {
                         // Navigate to the Main Menu screen and end this one if the option text and path are "Main Menu"
                         startActivity(Intent(this@MainActivity, MainMenuActivity::class.java))
-                        music!!.stop()
                         finish()
                     } else {
                         // Progress to the next story event
@@ -294,6 +299,35 @@ class MainActivity() : AppCompatActivity() {
     }
 
     private fun currentStoryRoot(): String = currentPath.split(":")[0] + ":0"
+
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityResumed(activity: Activity) {
+        backgroundAnimation.start()
+        music!!.start()
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+        music!!.pause()
+    }
+
+    override fun onActivityStopped(activity: Activity) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+//        TODO("Not yet implemented")
+    }
+
+    override fun onActivityDestroyed(activity: Activity) {
+//        TODO("Not yet implemented")
+    }
 }
 
 class Story(
