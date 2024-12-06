@@ -1,14 +1,13 @@
-# Define a custom scalar for DateTime
+# schema.graphql
 scalar DateTime
 
-# Root query type
+# Root types
 type Query {
   getEvent(id: ID!): Event
   getAllEvents: [Event]
   getEventsByType(type: String!): [Event]
 }
 
-# Root mutation type
 type Mutation {
   createEvent(input: EventInput!): Event
   updateEvent(id: ID!, input: EventUpdateInput!): Event
@@ -23,18 +22,15 @@ type Event {
   storyText: String!
   path: String
   options: [Option]
-  createdAt: DateTime  # New field for creation timestamp
-  updatedAt: DateTime  # New field for update timestamp
 }
 
-# Option type definition for event options
 type Option {
   id: ID
   text: String!
   nextEventId: ID
 }
 
-# Input types for creating and updating events
+# Input types
 input EventInput {
   title: String!
   type: String!
@@ -48,7 +44,6 @@ input OptionInput {
   nextEventId: ID
 }
 
-# Input types for updating events
 input EventUpdateInput {
   title: String
   type: String
