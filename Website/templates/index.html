@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Adventures</title>
+    <link rel="stylesheet" href="./Website/static/style/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline id="background-video">
+        <source src="./Website/static/images/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Landing Page -->
+    <section id="landing-page">
+        <div class="container">
+            <h1>DJK Text Adventures</h1>
+            <p>Your journey begins in a galaxy far, far away...</p>
+            <button id="start-game">Enter the Adventure</button>
+        </div>
+    </section>
+
+    <!-- Gameplay Page -->
+    <section id="gameplay-page" class="hidden">
+        <div class="game-container">
+            <div id="game-text">Welcome to the game! Your choices will shape your destiny.</div>
+            <div id="choices"></div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
+    <script type="module" src="./Website/static/scripts/script.js"></script>
+</body>
+</html>

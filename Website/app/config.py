@@ -5,8 +5,8 @@ load_dotenv()
 
 class Config:
     # Web-specific configuration
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key')
-    ALLOWED_WEBSITE = 'https://zytronium.github.io'
+    SECRET_KEY = os.environ.get('SECRET_KEY', '')
+    ALLOWED_WEBSITE = 'https://zytronium.github.io/atlas-hack_sprint_adventure/'
     
     # Firebase Configuration
     FIREBASE_PROJECT_ID = 'text-adventure-55f7e'

@@ -2,6 +2,7 @@ from app import create_app
 from api.routes import routes
 
 app = create_app()
+print("Is this happening here")
 app.register_blueprint(routes, url_prefix='/api')
 
 if __name__ == '__main__':

@@ -1,0 +1,53 @@
+# schema.graphql
+scalar DateTime
+
+# Root types
+type Query {
+  getEvent(id: ID!): Event
+  getAllEvents: [Event]
+  getEventsByType(type: String!): [Event]
+}
+
+type Mutation {
+  createEvent(input: EventInput!): Event
+  updateEvent(id: ID!, input: EventUpdateInput!): Event
+  deleteEvent(id: ID!): Boolean
+}
+
+# Event type definition
+type Event {
+  id: ID
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [Option]
+}
+
+type Option {
+  id: ID
+  text: String!
+  nextEventId: ID
+}
+
+# Input types
+input EventInput {
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [OptionInput]
+}
+
+input OptionInput {
+  text: String!
+  nextEventId: ID
+}
+
+input EventUpdateInput {
+  title: String
+  type: String
+  storyText: String
+  path: String
+  options: [OptionInput]
+}
