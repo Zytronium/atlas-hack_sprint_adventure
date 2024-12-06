@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DJK Text Adventures</title>
-    
-    <!-- Firebase Scripts for version 8.x (Non-modular) -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
+        authDomain: "text-adventure-55f7e.firebaseapp.com",
+        databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
+        projectId: "text-adventure-55f7e",
+        storageBucket: "text-adventure-55f7e.firebasestorage.app",
+        messagingSenderId: "721830400936",
+        appId: "1:721830400936:web:ef55d79e24c4024217439d",
+        measurementId: "G-Y55FLGNH5V"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -37,24 +56,7 @@
         </div>
     </section>
 
-    <!-- Firebase Configuration -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
-            authDomain: "text-adventure-55f7e.firebaseapp.com",
-            projectId: "text-adventure-55f7e",
-            storageBucket: "text-adventure-55f7e.firebasestorage.app",
-            messagingSenderId: "721830400936",
-            appId: "1:721830400936:web:ef55d79e24c4024217439d",
-            databaseURL: "https://text-adventure-55f7e.firebaseio.com"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-    </script>
-
     <!-- Main Script -->
-    <script src="scripts/script.js"></script>
+    <script type="module" src="scripts/script.js"></script>
 </body>
 </html>

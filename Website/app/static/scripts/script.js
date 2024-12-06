@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+// Firebase setup (use the module import for Firebase v11)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -46,19 +47,48 @@ document.addEventListener("DOMContentLoaded", () => {
       // Get the data from the document
       const gameStateData = docSnap.data();
 
-      // Find the specific game state based on path
-      const gameState = gameStateData.states.find(state => state.path === path);
+      console.log(gameStateData);  // Log the game state data to see its structure
 
-      if (!gameState) {
-        console.error(`No game state found for path: ${path}`);
-        gameText.textContent = "Specific game state not found!";
-        return;
+      // Check if 'events' is an object (map) before proceeding
+      if (gameStateData.events && typeof gameStateData.events === 'object') {
+        // Convert the events map to an array of events
+        const eventsArray = Object.values(gameStateData.events);  // Get array of event objects
+        
+        // Find the specific game state based on path
+        const gameState = eventsArray.find(event => event.path === path);
+
+        if (!gameState) {
+          console.error(`No game state found for path: ${path}`);
+          gameText.textContent = "Specific game state not found!";
+          return;
+        }
+
+        updateGameUI(gameState);
+      } else {
+        console.error("'events' is not a valid object:", gameStateData.events);
+        gameText.textContent = "'events' is not a valid object!";
       }
 
-      updateGameUI(gameState);
     } catch (error) {
       console.error("Error fetching game state:", error);
       gameText.textContent = "An error occurred while loading the game state.";
+    }
+  }
+
+  // Update the game UI with the given state
+  function updateGameUI(gameState) {
+    // Set the game text based on the event's description or text
+    gameText.textContent = gameState.text || "No game text available.";
+
+    // Update the choices UI
+    choicesContainer.innerHTML = "";  // Clear previous choices
+    if (gameState.choices && Array.isArray(gameState.choices)) {
+      gameState.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice.text;
+        button.addEventListener("click", () => loadGameState(choice.nextEventId));
+        choicesContainer.appendChild(button);
+      });
     }
   }
 
