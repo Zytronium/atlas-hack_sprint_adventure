@@ -2,6 +2,7 @@ package com.zytronium.textadventuregame
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri.parse
 import android.os.Bundle
 import android.os.Handler
@@ -13,9 +14,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
+import com.zytronium.textadventuregame.MusicPlayers.clickSound
+import com.zytronium.textadventuregame.MusicPlayers.music
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity() : AppCompatActivity() {
+    // UI elements
     private lateinit var storyTextView: TextView
     private lateinit var option1Btn: TextView
     private lateinit var option2Btn: TextView
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var background: ConstraintLayout
     private lateinit var backgroundAnimation: ScaledVideoView
 
+    // Misc variables
     private lateinit var firestore: FirebaseFirestore
     private var currentPath: String = "power:0"
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
@@ -197,7 +201,10 @@ class MainActivity : AppCompatActivity() {
                 currentPath = path
                 println("button pressed. New path: $currentPath") // TODO: debug code; remove later
 
-                // Play a quick button animation and start the text adventure game
+                // Play a click sound, briefly animate button, and start the text adventure game
+
+                // Play the click sound effect (What did you think this does? Download more RAM?)
+                playSound()
 
                 // Create animators for scale X and scale Y for the button being pressed
                 val animatorX = ObjectAnimator.ofFloat(btn, View.SCALE_X, 1f, 1.125f)
@@ -226,6 +233,7 @@ class MainActivity : AppCompatActivity() {
                     if (path == "Main Menu" && button_text == "Main Menu") {
                         // Navigate to the Main Menu screen and end this one if the option text and path are "Main Menu"
                         startActivity(Intent(this@MainActivity, MainMenuActivity::class.java))
+                        music!!.stop()
                         finish()
                     } else {
                         // Progress to the next story event
@@ -274,6 +282,15 @@ class MainActivity : AppCompatActivity() {
             )
             else -> arrayOfNulls(6) // Normal flow
         }
+    }
+
+
+    private fun playMusic() {
+        music!!.start()
+    }
+
+    private fun playSound() {
+        clickSound!!.start()
     }
 
     private fun currentStoryRoot(): String = currentPath.split(":")[0] + ":0"
