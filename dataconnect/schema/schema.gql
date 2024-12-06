@@ -1,9 +1,58 @@
+# Define a custom scalar for DateTime
 scalar DateTime
 
+# Root query type
 type Query {
-  _empty: String
+  getEvent(id: ID!): Event
+  getAllEvents: [Event]
+  getEventsByType(type: String!): [Event]
 }
 
+# Root mutation type
 type Mutation {
-  _empty: String
+  createEvent(input: EventInput!): Event
+  updateEvent(id: ID!, input: EventUpdateInput!): Event
+  deleteEvent(id: ID!): Boolean
+}
+
+# Event type definition
+type Event {
+  id: ID
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [Option]
+  createdAt: DateTime  # New field for creation timestamp
+  updatedAt: DateTime  # New field for update timestamp
+}
+
+# Option type definition for event options
+type Option {
+  id: ID
+  text: String!
+  nextEventId: ID
+}
+
+# Input types for creating and updating events
+input EventInput {
+  title: String!
+  type: String!
+  storyText: String!
+  path: String
+  options: [OptionInput]
+}
+
+input OptionInput {
+  text: String!
+  nextEventId: ID
+}
+
+# Input types for updating events
+input EventUpdateInput {
+  title: String
+  type: String
+  storyText: String
+  path: String
+  options: [OptionInput]
 }
