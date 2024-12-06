@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
-import android.media.MediaPlayer
 import android.net.Uri.parse
 import android.os.Bundle
 import android.os.Handler
@@ -289,9 +288,12 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
         }
     }
 
-
     private fun playMusic() {
         music!!.start()
+    }
+
+    private fun pauseMusic() {
+        music!!.pause()
     }
 
     private fun playSound() {
@@ -310,11 +312,11 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
 
     override fun onActivityResumed(activity: Activity) {
         backgroundAnimation.start()
-        music!!.start()
+        playMusic()
     }
 
     override fun onActivityPaused(activity: Activity) {
-        music!!.pause()
+        pauseMusic()
     }
 
     override fun onActivityStopped(activity: Activity) {
