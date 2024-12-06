@@ -1,0 +1,5 @@
+# Python dependencies
+flask
+firebase-admin
+python-dotenv
+requests

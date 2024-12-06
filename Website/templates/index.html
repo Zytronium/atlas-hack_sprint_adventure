@@ -3,39 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atlas Adventures</title>
-    <link rel="stylesheet" href="./Website/static/style/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <title>DJK Text Adventures</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
-    <!-- Background Video -->
-    <video autoplay loop muted playsinline id="background-video">
-        <source src="./Website/static/images/background.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
-    <!-- Landing Page -->
-    <section id="landing-page">
-        <div class="container">
-            <h1>DJK Text Adventures</h1>
-            <p>Your journey begins in a galaxy far, far away...</p>
-            <button id="start-game">Enter the Adventure</button>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center">
+    <div class="container text-center max-w-2xl px-4">
+        <h1 class="text-5xl font-bold mb-6 text-yellow-400">DJK Text Adventures</h1>
+        
+        <p class="text-xl mb-8 italic">Your journey begins in a galaxy far, far away...</p>
+        
+        <div class="space-y-4">
+            <button id="start-adventure" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Enter the Adventure
+            </button>
+            
+            <div id="auth-buttons" class="flex justify-center space-x-4">
+                <button id="login-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Login
+                </button>
+                <button id="register-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Register
+                </button>
+            </div>
         </div>
-    </section>
 
-    <!-- Gameplay Page -->
-    <section id="gameplay-page" class="hidden">
-        <div class="game-container">
-            <div id="game-text">Welcome to the game! Your choices will shape your destiny.</div>
-            <div id="choices"></div>
+        <!-- Login/Register Modal -->
+        <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+            <div class="bg-gray-800 p-8 rounded-lg w-96">
+                <h2 id="modal-title" class="text-2xl mb-4">Login</h2>
+                <form id="auth-form" class="space-y-4">
+                    <input type="email" id="email" placeholder="Email" required class="w-full p-2 rounded bg-gray-700 text-white">
+                    <input type="password" id="password" placeholder="Password" required class="w-full p-2 rounded bg-gray-700 text-white">
+                    <div class="flex space-x-4">
+                        <button type="submit" id="submit-btn" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                            Submit
+                        </button>
+                        <button type="button" id="close-modal" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- JavaScript -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
-    <script type="module" src="./Website/static/scripts/script.js"></script>
+    <script>
+        // Authentication Modal Logic
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const authForm = document.getElementById('auth-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const startAdventureBtn = document.getElementById('start-adventure');
+
+        let isLogin = true;
+
+        function toggleModal(show, login = true) {
+            authModal.classList.toggle('hidden', !show);
+            isLogin = login;
+            modalTitle.textContent = login ? 'Login' : 'Register';
+            submitBtn.textContent = login ? 'Login' : 'Register';
+        }
+
+        loginBtn.addEventListener('click', () => toggleModal(true, true));
+        registerBtn.addEventListener('click', () => toggleModal(true, false));
+        closeModalBtn.addEventListener('click', () => toggleModal(false));
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const endpoint = isLogin ? '/login' : '/register';
+                const response = await axios.post(endpoint, { email, password });
+                
+                // Store user ID or token if needed
+                localStorage.setItem('userId', response.data.user_id);
+                
+                // Close modal and potentially redirect
+                toggleModal(false);
+                alert(response.data.message);
+            } catch (error) {
+                alert(error.response?.data?.error || 'An error occurred');
+            }
+        });
+
+        startAdventureBtn.addEventListener('click', () => {
+            // Check if user is logged in before starting game
+            const userId = localStorage.getItem('userId');
+            if (userId) {
+                window.location.href = '/game';
+            } else {
+                alert('Please login to start your adventure!');
+                toggleModal(true, true);
+            }
+        });
+    </script>
 </body>
 </html>

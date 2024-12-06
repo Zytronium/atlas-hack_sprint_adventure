@@ -75,5 +75,18 @@
         -->
         <script defer src="/__/firebase/init.js?useEmulator=true"></script>
       <script type="module" src="./Website/static/scripts/script.js"></script>
-</body>
+      <script
+        type="text/JavaScript"
+        src="{{ url_for('website', 'static', 'scripts', filename='script.js') }}"
+        ></script>
+        <script
+        type="text/JavaScript"
+        src="{{ url_for('website', 'static', 'scripts', filename='server.js') }}"
+        ></script>
+        <script
+        type="text/css"
+        src="{{ url_for('website', 'static', 'style', filename='styles.css') }}"
+        ></script>
+        
+    </body>
 </html>

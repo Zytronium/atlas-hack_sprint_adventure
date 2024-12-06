@@ -1,17 +1,17 @@
-from flask import Blueprint, request, jsonify, current_app, send_from_directory
-import os
+from flask import Blueprint, render_template, request, jsonify, current_app
 
-routes = Blueprint('routes', __name__)
+main_routes = Blueprint('main_routes', __name__)
 
-# Serve index.html file
-@routes.route('/')
-def serve_index():
-    # Path to the folder where your 'index.html' is located
-    index_file = os.path.join(current_app.root_path, 'static', 'index.html')
-    return send_from_directory(os.path.dirname(index_file), 'index.html')
+@main_routes.route('/')
+def index():
+    return render_template('index.html')
 
-@routes.route('/game-state', methods=['GET', 'POST'])
-def handle_game_state():
+@main_routes.route('/game')
+def game():
+    return render_template('game.html')
+
+@main_routes.route('/game-state', methods=['GET', 'POST'])
+def game_state():
     db = current_app.config['FIRESTORE']
     
     if request.method == 'GET':
@@ -34,8 +34,8 @@ def handle_game_state():
         game_ref.set(game_data)
         return jsonify({"message": "Game state saved successfully"}), 201
 
-@routes.route('/player-progress', methods=['GET', 'POST'])
-def handle_player_progress():
+@main_routes.route('/player-progress', methods=['GET', 'POST'])
+def player_progress():
     db = current_app.config['FIRESTORE']
     
     if request.method == 'GET':

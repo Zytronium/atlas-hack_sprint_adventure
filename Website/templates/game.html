@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJK Text Adventure</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div class="flex-grow container mx-auto px-4 py-8 max-w-2xl">
+        <div id="game-container" class="bg-gray-800 rounded-lg p-6 shadow-lg">
+            <div id="game-text" class="mb-6 text-lg min-h-[200px]">
+                Welcome to the game! Your choices will shape your destiny.
+            </div>
+
+            <div id="choices" class="space-y-4">
+                <!-- Choices will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 p-4 text-center">
+        <div class="container mx-auto flex justify-between items-center">
+            <button id="save-game" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Save Game
+            </button>
+            <button id="load-game" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                Load Game
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        const gameText = document.getElementById('game-text');
+        const choicesContainer = document.getElementById('choices');
+        const saveGameBtn = document.getElementById('save-game');
+        const loadGameBtn = document.getElementById('load-game');
+
+        let currentGameState = {
+            gameId: null,
+            playerId: null,
+            currentScene: null
+        };
+
+        // Initialize game on page load
+        async function initializeGame() {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('Please log in first!');
+                window.location.href = '/';
+                return;
+            }
+
+            currentGameState.playerId = userId;
+
+            try {
+                // Check if there's a saved game state
+                const savedState = await axios.get(`/player-progress?player_id=${userId}`);
+                if (savedState.data) {
+                    currentGameState = savedState.data;
+                    loadScene(currentGameState.currentScene);
+                } else {
+                    // Start a new game
+                    startNewGame();
+                }
+            } catch (error) {
+                startNewGame();
+            }
+        }
+
+        function startNewGame() {
+            // Initial game setup
+            currentGameState.gameId = `game_${Date.now()}`;
+            loadScene('intro');
+        }
+
+        function loadScene(sceneId) {
+            // Placeholder for scene loading logic
+            // In a real game, this would fetch scene data from a backend
+            const scenes = {
+                'intro': {
+                    text: 'You find yourself in a dimly lit spaceship. The stars twinkle outside the viewport.',
+                    choices: [
+                        { 
+                            text: 'Explore the control panel', 
+                            nextScene: 'control_panel' 
+                        },
+                        { 
+                            text: 'Check the cargo hold', 
+                            nextScene: 'cargo_hold' 
+                        }
+                    ]
+                },
+                'control_panel': {
+                    text: 'The control panel is filled with blinking lights and mysterious switches.',
+                    choices: [
+                        { 
+                            text: 'Activate navigation system', 
+                            nextScene: 'navigation' 
+                        },
+                        { 
+                            text: 'Return to previous area', 
+                            nextScene: 'intro' 
+                        }
+                    ]
+                },
+                'cargo_hold': {
+                    text: 'The cargo hold is dark and filled with mysterious containers.',
+                    choices: [
+                        { 
+                            text: 'Investigate the containers', 
+                            nextScene: 'containers' 
+                        },
+                        { 
+                            text: 'Return to previous area', 
+                            nextScene: 'intro' 
+                        }
+                    ]
+                }
+                // More scenes can be added
+            };
+
+            const scene = scenes[sceneId];
+            if (!scene) {
+                console.error('Scene not found');
+                return;
+            }
+
+            // Update game text
+            gameText.textContent = scene.text;
+
+            // Clear previous choices
+            choicesContainer.innerHTML = '';
+
+            // Create choice buttons
+            scene.choices.forEach(choice => {
+                const choiceBtn = document.createElement('button');
+                choiceBtn.textContent = choice.text;
+                choiceBtn.classList.add(
+                    'w-full', 'bg-yellow-500', 'hover:bg-yellow-600', 
+                    'text-black', 'font-bold', 'py-3', 'px-6', 
+                    'rounded-lg', 'transition', 'duration-300', 
+                    'ease-in-out', 'transform', 'hover:scale-105'
+                );
+                choiceBtn.addEventListener('click', () => {
+                    currentGameState.currentScene = choice.nextScene;
+                    loadScene(choice.nextScene);
+                });
+                choicesContainer.appendChild(choiceBtn);
+            });
+
+            // Save game state
+            saveGameState();
+        }
+
+        async function saveGameState() {
+            try {
+                await axios.post('/game-state', {
+                    game_id: currentGameState.gameId,
+                    ...currentGameState
+                });
+
+                await axios.post('/player-progress', {
+                    player_id: currentGameState.playerId,
+                    ...currentGameState
+                });
+            } catch (error) {
+                console.error('Failed to save game state', error);
+            }
+        }
+
+        async function loadSavedGame() {
+            try {
+                const savedState = await axios.get(`/player-progress?player_id=${currentGameState.playerId}`);
+                if (savedState.data) {
+                    currentGameState = savedState.data;
+                    loadScene(currentGameState.currentScene);
+                } else {
+                    alert('No saved game found');
+                }
+            } catch (error) {
+                alert('Failed to load saved game');
+            }
+        }
+
+        // Event Listeners
+        saveGameBtn.addEventListener('click', saveGameState);
+        loadGameBtn.addEventListener('click', loadSavedGame);
+
+        // Initialize game on page load
+        initializeGame();
+    </script>
+</body>
+</html>
