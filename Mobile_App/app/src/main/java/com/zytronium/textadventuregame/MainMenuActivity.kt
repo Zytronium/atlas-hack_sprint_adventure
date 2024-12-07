@@ -3,14 +3,17 @@ package com.zytronium.textadventuregame
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri.parse
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,6 +24,7 @@ import com.zytronium.textadventuregame.MusicPlayers.music
 class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
 
     private lateinit var backgroundAnimation: ScaledVideoView
+    private var switchingActivities = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +69,9 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
         // Play the click sound effect (What did you think this does? Download more RAM?)
         playSound()
 
+        // Vibrate
+        vibrate(75L)
+
         // Create animators for scale X and scale Y for the button being pressed
         val animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.125f)
         val animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.125f)
@@ -93,6 +100,7 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
             val handler2 = Handler(Looper.getMainLooper())
             handler2.postDelayed({
             // Go to the main game activity and close the main menu
+                switchingActivities = true
                 startActivity(Intent(this@MainMenuActivity, MainActivity::class.java))
                 finish()
             }, 45L)
@@ -101,8 +109,26 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
         // Delays are intentionally shorter than the animation durations because there seems to be a weird additional delay
     }
 
+    private fun vibrate(time: Long) {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        time,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
+            } else vibrator.vibrate(time)
+        }
+    }
+
     private fun playMusic() {
         music!!.start()
+    }
+
+    private fun pauseMusic() {
+        music!!.pause()
     }
 
     private fun playSound() {
@@ -119,11 +145,12 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
 
     override fun onActivityResumed(activity: Activity) {
         backgroundAnimation.start()
-        music!!.start()
+        playMusic()
     }
 
     override fun onActivityPaused(activity: Activity) {
-        music!!.pause()
+        if (!switchingActivities)
+            pauseMusic()
     }
 
     override fun onActivityStopped(activity: Activity) {
