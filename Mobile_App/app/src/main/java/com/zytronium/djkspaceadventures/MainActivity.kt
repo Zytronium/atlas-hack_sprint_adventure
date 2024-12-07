@@ -41,7 +41,6 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
     private var switchingActivities = false
     private var typeSpeed: Int = 1 // 1 = Normal, 2 = Fast, 3 = Instant
-    private var typing: Boolean = false // Whether or not text is currently being typed. (NOT the setting of enable/disable the effect)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,13 +106,11 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
     ) {
         // Stop if the message has been fully typed
         if (typeProgress >= msg.length) {
-            typing = false
             typeSpeedIncrementer.visibility = View.GONE
             typeSpeed = 1
             return
         }
 
-        typing = true
         typeSpeedIncrementer.visibility = View.VISIBLE
 
         if (typeProgress == 0)
@@ -122,7 +119,6 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
         // If typing effect is off in settings or type speed is instant (3+), instantly type the entire message
         if(/*!settings.doTypeEffect ||*/ typeSpeed >= 3) {
             textElement.text = pauseChar?.let { msg.replace(it, "") }
-            typing = false
             typeSpeedIncrementer.visibility = View.GONE
             typeSpeed = 1
         } else { // If the typing effect is turned on and the type speed is not instant, ...
