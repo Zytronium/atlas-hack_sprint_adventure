@@ -24,6 +24,7 @@ import com.zytronium.textadventuregame.MusicPlayers.music
 class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
 
     private lateinit var backgroundAnimation: ScaledVideoView
+    private var switchingActivities = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +100,7 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
             val handler2 = Handler(Looper.getMainLooper())
             handler2.postDelayed({
             // Go to the main game activity and close the main menu
+                switchingActivities = true
                 startActivity(Intent(this@MainMenuActivity, MainActivity::class.java))
                 finish()
             }, 45L)
@@ -147,7 +149,8 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
     }
 
     override fun onActivityPaused(activity: Activity) {
-        pauseMusic()
+        if (!switchingActivities)
+            pauseMusic()
     }
 
     override fun onActivityStopped(activity: Activity) {

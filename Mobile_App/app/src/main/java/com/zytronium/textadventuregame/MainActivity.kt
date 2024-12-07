@@ -38,6 +38,7 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
     private lateinit var firestore: FirebaseFirestore
     private var currentPath: String = "power:0"
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
+    private var switchingActivities = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -244,6 +245,7 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
 
                     if (path == "Main Menu" && button_text == "Main Menu") {
                         // Navigate to the Main Menu screen and end this one if the option text and path are "Main Menu"
+                        switchingActivities = true
                         startActivity(Intent(this@MainActivity, MainMenuActivity::class.java))
                         finish()
                     } else {
@@ -337,7 +339,8 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
     }
 
     override fun onActivityPaused(activity: Activity) {
-        pauseMusic()
+        if (!switchingActivities)
+            pauseMusic()
     }
 
     override fun onActivityStopped(activity: Activity) {
