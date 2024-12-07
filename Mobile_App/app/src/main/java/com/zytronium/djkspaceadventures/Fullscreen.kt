@@ -1,4 +1,4 @@
-package com.zytronium.textadventuregame
+package com.zytronium.djkspaceadventures
 
 import android.view.WindowManager
 import androidx.core.view.ViewCompat

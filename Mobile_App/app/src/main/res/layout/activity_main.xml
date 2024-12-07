@@ -92,7 +92,7 @@
             app:cornerRadius="18dp" />
     </LinearLayout>
 
-    <com.zytronium.textadventuregame.ScaledVideoView
+    <com.zytronium.djkspaceadventures.ScaledVideoView
         android:id="@+id/backgroundAnimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

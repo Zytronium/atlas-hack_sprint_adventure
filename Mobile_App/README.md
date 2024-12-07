@@ -17,10 +17,10 @@ manner, open the **Mobile_App** directory as an Android Studio project if you
 have Android Studio installed; then in the dropdown menu in the top-left
 (as seen in the image below), select "`Android`."
 
-![Dropdown menu with "Android" highlighted](../Raedme_Assets/Android_File_Organization_Img.png)
+![Dropdown menu with "Android" highlighted](../Readme_Assets/Android_File_Organization_Img.png)
 
-The main Kotlin code is in
-[kotlin+java/com.zytronium.textadventuregame](Mobile_App/app/src/main/java/com/zytronium/textadventuregame)
-and the graphical layout is in [res/layout](app/src/main/res/layout).
+The main Kotlin code files are in
+[kotlin+java/com.zytronium.djkspaceadventures](app/src/main/java/com/zytronium/djkspaceadventures)
+and the graphical layouts are in [res/layout](app/src/main/res/layout).
 
-![Mobile app directory file layout showing Kotlin and XML layout file locations](../Raedme_Assets/Android_Main_Code_And_Layout_Files.png)
+![Mobile app directory file layout showing Kotlin and XML layout file locations](../Readme_Assets/Android_Main_Code_And_Layout_Files.png)

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.zytronium.textadventuregame'
+    namespace 'com.zytronium.djkspaceadventures'
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.zytronium.textadventuregame"
+        applicationId "com.zytronium.djkspaceadventures"
         minSdk 23
         targetSdk 35
         versionCode 2

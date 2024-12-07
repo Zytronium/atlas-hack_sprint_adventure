@@ -1,4 +1,4 @@
-package com.zytronium.textadventuregame
+package com.zytronium.djkspaceadventures
 
 import org.junit.Test
 

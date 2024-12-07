@@ -1,4 +1,4 @@
-package com.zytronium.textadventuregame
+package com.zytronium.djkspaceadventures
 
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -18,8 +18,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.zytronium.textadventuregame.MusicPlayers.clickSound
-import com.zytronium.textadventuregame.MusicPlayers.music
+import com.zytronium.djkspaceadventures.MusicPlayers.clickSound
+import com.zytronium.djkspaceadventures.MusicPlayers.music
 
 class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
 
