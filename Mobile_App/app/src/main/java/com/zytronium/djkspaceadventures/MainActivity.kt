@@ -24,6 +24,7 @@ import com.zytronium.djkspaceadventures.MusicPlayers.music
 
 class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
     // UI elements
+    private lateinit var typeSpeedIncrementer: View
     private lateinit var storyTextView: TextView
     private lateinit var option1Btn: TextView
     private lateinit var option2Btn: TextView
@@ -39,6 +40,8 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
     private var currentPath: String = "power:0"
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
     private var switchingActivities = false
+    private var typeSpeed: Int = 1 // 1 = Normal, 2 = Fast, 3 = Instant
+    private var typing: Boolean = false // Whether or not text is currently being typed. (NOT the setting of enable/disable the effect)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,7 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
         fullscreenWithNoCutout(window) // Fullscreen mode
 
         // Initialize UI element references
+        typeSpeedIncrementer = findViewById(R.id.typeSpeedIncrementer)
         storyTextView = findViewById(R.id.story_text)
         option1Btn = findViewById(R.id.button1)
         option2Btn = findViewById(R.id.button2)
@@ -79,6 +83,154 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
         // Load data from our online Firestore database and load it into the UI elements.
         firestore = FirebaseFirestore.getInstance()
         fetchStoryData()
+    }
+
+
+    private fun type(
+        msg: String,
+        textElement: TextView = storyTextView,
+        charIntervalNormal: Int = 50,
+        charIntervalFast: Int = 10,
+        pauseTimeNormal: Int = 250,
+        pauseTimeFast: Int = 50,
+        pauseChar: String? = "║",
+        autoPauseOnPunctuation: Boolean = true,
+        punctuationPauseMap: Map<String, Int> = mapOf(
+            "," to 50,
+            "." to 100,
+            ";" to 75,
+            ":" to 100,
+            "?" to 115,
+            "!" to 115,
+            "—" to 100
+        ),
+        typeProgress: Int = 0
+    ) {
+        // Stop if the message has been fully typed
+        if (typeProgress >= msg.length) {
+            typing = false
+            typeSpeedIncrementer.visibility = View.GONE
+            typeSpeed = 1
+            return
+        }
+
+        typing = true
+        typeSpeedIncrementer.visibility = View.VISIBLE
+
+        if (typeProgress == 0)
+            textElement.text = ""
+
+        // If typing effect is off in settings or type speed is instant (3+), instantly type the entire message
+        if(/*!settings.doTypeEffect ||*/ typeSpeed >= 3) {
+            textElement.text = pauseChar?.let { msg.replace(it, "") }
+            typing = false
+            typeSpeedIncrementer.visibility = View.GONE
+            typeSpeed = 1
+        } else { // If the typing effect is turned on and the type speed is not instant, ...
+            val char = msg.toCharArray()[typeProgress]
+
+            // If the current char is the pause char, then pause briefly and skip this char
+            if(pauseChar != null && char.toString() == pauseChar) {
+                // Get the proper delay length based on typeSpeed (pause char delay)
+                val delay = when (typeSpeed) {
+                    1 -> pauseTimeNormal
+                    2 -> pauseTimeFast
+                    else -> 0 // TypeSpeed should never be anything but 1 or 2 here, but added this else branch just in case.
+                }
+
+                // If type speed isn't instant (ideally, this should always be true here. But its better to be safe than sorry), ...
+                if(delay > 0) {
+                    // Pause for the proper amount of time, skip this character, and continue the recursive loop
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        type(
+                            msg,
+                            textElement,
+                            charIntervalNormal,
+                            charIntervalFast,
+                            pauseTimeNormal,
+                            pauseTimeFast,
+                            pauseChar,
+                            autoPauseOnPunctuation,
+                            punctuationPauseMap,
+                            typeProgress + 1
+                        )
+                    }, delay.toLong())
+                } else { // If delay is somehow instant (should never be true), ...
+                    // Instantly skip this character and continue the recursive loop
+                    type(
+                        msg,
+                        textElement,
+                        charIntervalNormal,
+                        charIntervalFast,
+                        pauseTimeNormal,
+                        pauseTimeFast,
+                        pauseChar,
+                        autoPauseOnPunctuation,
+                        punctuationPauseMap,
+                        typeProgress + 1
+                    )
+                }
+            } else { // If the current char is not the pause char, ...
+                // Get the proper delay length based on typeSpeed (non-pause char delay)
+                var delay = when (typeSpeed) {
+                    1 -> charIntervalNormal
+                    2 -> charIntervalFast
+                    else -> 0 // TypeSpeed should never be anything but 1 or 2 here, but added this else branch just in case.
+                }
+
+                // If auto pausing on punctuation characters is enabled and this is one of the given punctuation chars, ...
+                if (autoPauseOnPunctuation && char.toString() in punctuationPauseMap.keys) {
+                    // Add the proper delay based on this character
+                    delay += when (typeSpeed) {
+                        1 -> punctuationPauseMap[char.toString()]!! // normal pause time
+                        2 -> punctuationPauseMap[char.toString()]!! / 5 // 5 times shorter pause time (consistent with default fast delay times being 5 times shorter than normal delay times in function prototype)
+                        else -> 0 // TypeSpeed should never be anything but 1 or 2 here, but added this else branch just in case.
+                    }
+                }
+
+                // If type speed isn't instant (ideally, this should always be true here. But its better to be safe than sorry), ...
+                if(delay > 0) {
+                    // Pause for the proper amount of time, type this character, and continue the recursive loop
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        // Add this character to the given text view
+                        textElement.text = "${textElement.text}${char}"
+
+                        // Continue the recursive loop
+                        type(
+                            msg,
+                            textElement,
+                            charIntervalNormal,
+                            charIntervalFast,
+                            pauseTimeNormal,
+                            pauseTimeFast,
+                            pauseChar,
+                            autoPauseOnPunctuation,
+                            punctuationPauseMap,
+                            typeProgress + 1
+                        )
+                    }, delay.toLong())
+                } else { // If delay is somehow instant (should never be true), ...
+                    // Instantly type this character and continue the recursive loop
+
+                    // Add this character to the given text view
+                    textElement.text = "${textElement.text}${char}"
+
+                    // Continue the recursive loop
+                    type(
+                        msg,
+                        textElement,
+                        charIntervalNormal,
+                        charIntervalFast,
+                        pauseTimeNormal,
+                        pauseTimeFast,
+                        pauseChar,
+                        autoPauseOnPunctuation,
+                        punctuationPauseMap,
+                        typeProgress + 1
+                    )
+                }
+            }
+        }
     }
 
     private fun fetchStoryData() {
@@ -154,7 +306,7 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
         val event = getCurrentEvent()
 
         // Load the data for the current story event into the UI elements (story text & buttons)
-        storyTextView.text = event.storyText
+        type(event.storyText, storyTextView)
         updateBackground()
         updateOptions(event)
     }
@@ -353,6 +505,10 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
 
     override fun onActivityDestroyed(activity: Activity) {
 //        TODO("Not yet implemented")
+    }
+
+    fun incrementTypingSpeed(view: View) {
+        typeSpeed++
     }
 }
 

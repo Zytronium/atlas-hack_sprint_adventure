@@ -9,6 +9,14 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
+    <View
+        android:id="@+id/typeSpeedIncrementer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="5dp"
+        tools:visibility="gone"
+        android:onClick="incrementTypingSpeed"/>
+
     <TextView
         android:id="@+id/story_text"
         android:layout_width="match_parent"
