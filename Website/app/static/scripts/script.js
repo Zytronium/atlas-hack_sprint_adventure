@@ -113,10 +113,10 @@ const db = getFirestore(app);
     const optionButtons = options.map((option, index) => {
       const button = document.createElement('button');
       button.classList.add('choice-btn');
-      button.textContent = option; // Option text
+      button.textContent = option; // Option text (e.g., "Look around", "Take a step forward")
       button.onclick = async () => {
         // Construct the next path by appending the option index
-        const nextPath = `${parseInt(currentPath) + 1}`; // Increment the path numerically
+        const nextPath = `${currentPath}${index + 1}`; // Append the option index to the current path
         console.log(`Next path: ${nextPath}`);
         await loadGameState(nextPath); // Load the next game state based on the constructed path
       };
