@@ -1,96 +1,146 @@
+/* Basic page layout */
 body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: #000;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.orbitron-unique {
-    font-family: "Orbitron", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
 #background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
 
-.hidden {
-    display: none;
-}
-
+/* Landing Page Styles */
 #landing-page {
-    text-align: center;
-    background: url('./Website/static/images/background.mp4') no-repeat center center fixed;
-    background-size: cover;
-    width: 100%;
-    height: 100%;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
 }
 
 #landing-page h1 {
-    font-size: 3rem;
-    margin: 0.5rem 0;
+  font-size: 3rem;
+  margin: 0.5rem 0;
 }
 
 #landing-page p {
-    font-size: 1.5rem;
-    margin: 1rem 0;
+  font-size: 1.5rem;
+  margin: 1rem 0;
 }
 
 #start-game {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    background-color: #ffcc00;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background-color: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
 #start-game:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
+/* Gameplay Page Styles */
 #gameplay-page {
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: none; /* Initially hidden */
+  background-color: rgba(0, 0, 0, 0.7); /* Dark overlay for better text visibility */
 }
 
 .game-container {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 #game-text {
-    font-size: 1.5rem;
-    margin: 1rem 0;
+  font-size: 1.5rem;
+  margin: 1rem 0;
 }
 
+#choices {
+  margin-top: 2rem;
+}
+
+/* Style for choice buttons */
 .choice-btn {
-    margin: 0.5rem;
-    padding: 1rem;
-    font-size: 1.2rem;
-    background-color: #ff5722;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
+  margin: 0.5rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 
 .choice-btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+/* Centering content */
+.container {
+  text-align: center;
+  z-index: 1;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  #landing-page h1 {
+    font-size: 2.5rem;
+  }
+  #landing-page p {
+    font-size: 1.2rem;
+  }
+  #start-game {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+  #game-text {
+    font-size: 1.2rem;
+  }
+  .choice-btn {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #landing-page h1 {
+    font-size: 2rem;
+  }
+  #landing-page p {
+    font-size: 1rem;
+  }
+  #start-game {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+  #game-text {
+    font-size: 1rem;
+  }
+  .choice-btn {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
 }
