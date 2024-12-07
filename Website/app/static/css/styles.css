@@ -45,7 +45,6 @@ body {
 }
 
 #start-game {
-<<<<<<< HEAD
   padding: 1rem 2rem;
   font-size: 1.2rem;
   background-color: #ffcc00;
@@ -54,17 +53,6 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
-=======
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    background-color: #ffcc00;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-family: 'Orbitron', sans-serif;
-    transition: transform 0.2s ease-in-out;
->>>>>>> 2039a9bfe2a104dd15e41e06f4fa86a3ef95df08
 }
 
 #start-game:hover {
@@ -107,7 +95,6 @@ body {
 }
 
 .choice-btn:hover {
-<<<<<<< HEAD
   transform: scale(1.1);
 }
 
@@ -157,7 +144,14 @@ body {
     padding: 0.6rem;
   }
 }
-=======
-    transform: scale(1.1);
-}
->>>>>>> 2039a9bfe2a104dd15e41e06f4fa86a3ef95df08
+
+.red-tint {
+    background-color: #26CF0000(255, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+  }
+  

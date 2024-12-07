@@ -1,5 +1,0 @@
-flask
-firebase-admin
-flask-cors
-pyjwt
-python-dotenv
