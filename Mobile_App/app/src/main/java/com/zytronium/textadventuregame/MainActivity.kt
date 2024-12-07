@@ -3,11 +3,15 @@ package com.zytronium.textadventuregame
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.net.Uri.parse
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -211,6 +215,9 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
                 // Play the click sound effect (What did you think this does? Download more RAM?)
                 playSound()
 
+                // Vibrate
+                vibrate(30L)
+
                 // Create animators for scale X and scale Y for the button being pressed
                 val animatorX = ObjectAnimator.ofFloat(btn, View.SCALE_X, 1f, 1.125f)
                 val animatorY = ObjectAnimator.ofFloat(btn, View.SCALE_Y, 1f, 1.125f)
@@ -285,6 +292,20 @@ class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbac
                 if (type != StoryEventType.Error) "Go Back" to currentPath.dropLast(1) else null to null
             )
             else -> arrayOfNulls(6) // Normal flow
+        }
+    }
+
+    private fun vibrate(time: Long) {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        time,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
+            } else vibrator.vibrate(time)
         }
     }
 

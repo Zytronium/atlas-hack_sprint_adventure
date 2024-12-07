@@ -57,6 +57,7 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
     transition: transform 0.2s ease-in-out;
 }
 
