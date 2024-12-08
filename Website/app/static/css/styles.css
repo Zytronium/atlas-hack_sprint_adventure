@@ -19,7 +19,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
 }
 
 /* Landing Page Styles */
@@ -86,6 +86,7 @@ body {
 .choice-btn {
   margin: 0.5rem;
   padding: 1rem;
+  font-family: 'Orbitron', sans-serif;
   font-size: 1.2rem;
   background-color: #ff5722;
   color: #fff;
@@ -148,11 +149,40 @@ body {
 
 /* Red Tint Overlay for Bad Ending */
 .red-tint {
-  background-color: rgba(255, 0, 0, 0.5); /* Corrected red tint */
+  /*
+  * Note: the hash values in Mobile_App/app/src/main/res/values/colors.xml work slightly
+  * differently than hash values in this file. The first 2 characters in colors.xml are
+  * for the transparency, while the last 2 here are for that.
+  */
+  background-color: rgba(199, 0, 0, 0.33); /* Corrected red tint */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1000;
+  z-index: -1;
+}
+
+
+/* Green Tint Overlay for Good Ending */
+.green-tint {
+  background-color: rgba(0, 217, 0, 0.33); /* green tint */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+
+/* Pastel-blue Tint Overlay for Neutral Ending */
+.pastel-blue-tint {
+  background-color: rgba(153, 185, 194, 0.25); /* light pastel-blue tint */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }

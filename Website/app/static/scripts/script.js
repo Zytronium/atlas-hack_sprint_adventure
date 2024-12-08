@@ -54,13 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const gameState = gameStateData.events[path];
       if (!gameState) {
         console.error(`No game state found for path: ${path}`);
-        gameText.textContent = `No game state found for path: ${path}`;
+        gameText.textContent = `Error 404: Story event not found.`;
         return;
       }
 
       handleGameState(gameState, path);
     } catch (error) {
-      console.error("Error loading game state:", error);
+      console.error("Error loading game state: ", error);
       gameText.textContent = "An error occurred while loading the game state.";
     }
   }
@@ -70,25 +70,34 @@ document.addEventListener("DOMContentLoaded", () => {
     typeText(gameText, gameState.storyText, 25); // Use typewriter effect for text
 
     if (gameState.options) {
-      handleOptions(gameState.options, currentPath);
+      handleOptions(gameState.options, gameState.optionPaths, currentPath);
     } else {
       handleEndings(gameState);
     }
   }
 
   // Display options as buttons
-  function handleOptions(options, currentPath) {
-    choicesContainer.innerHTML = ""; // Clear existing buttons
+  function handleOptions(options, optionPaths, currentPath) {
+    // Clear existing buttons
+    choicesContainer.innerHTML = "";
 
+    // Get the button click sound element
+    const buttonClickSound = document.getElementById("button-click-sound");
+
+    // Generate buttons for each option
     options.forEach((option, index) => {
       const button = document.createElement("button");
       button.classList.add("choice-btn");
       button.textContent = option;
-      button.onclick = async () => {
+
+      // Play the click sound when the button is clicked and navigate to next story event
+      button.addEventListener("click", async () => {
+        buttonClickSound.play(); // Play click sound
         const nextPath = `${currentPath}${index + 1}`;
         console.log(`Navigating to path: ${nextPath}`);
-        await loadGameState(nextPath);
-      };
+        await loadGameState(nextPath); // Load the next game state
+      });
+
       choicesContainer.appendChild(button);
     });
   }
@@ -98,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameState.type === "BadEnding") {
       showBadEnding(gameState.storyText, "bad-ending.gif");
     } else if (gameState.type === "GoodEnding") {
-      showWinPage(gameState.storyText, "win-image.gif");
+      showGoodEnding(gameState.storyText, "good-ending.gif");
+    } else if (gameState.type === "NeutralEnding") {
+      showNeutralEnding(gameState.storyText, "neutral-ending.gif");
     } else {
       gameText.textContent = gameState.storyText;
       showRestartButton();  // Show the restart button when no options exist
@@ -123,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showBadEnding(storyText, gifSrc) {
     gameplayPage.innerHTML = `
       <div class="red-tint"></div>
-      <h1>Game Over</h1>
+      <h1>Game Over. You got a bad ending.</h1>
       <p>${storyText}</p>
       <img src="${gifSrc}" alt="Bad Ending" />
     `;
@@ -131,11 +142,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Show win page with a GIF
-  function showWinPage(storyText, gifSrc) {
+  function showGoodEnding(storyText, gifSrc) {
     gameplayPage.innerHTML = `
-      <h1>Congratulations!</h1>
+      <div class="green-tint"></div>
+      <h1>Congratulations! You got a good ending.</h1>
       <p>${storyText}</p>
-      <img src="${gifSrc}" alt="You Win" />
+      <img src="${gifSrc}" alt="Good Ending" />
+    `;
+    showRestartButton();  // Show restart button after winning
+  }
+
+  // Show win page with a GIF
+  function showNeutralEnding(storyText, gifSrc) {
+    gameplayPage.innerHTML = `
+      <div class="pastel-blue-tint"></div>
+      <h1>The End. You got a neutral ending.</h1>
+      <p>${storyText}</p>
+      <img src="${gifSrc}" alt="Neutral Ending" />
     `;
     showRestartButton();  // Show restart button after winning
   }
