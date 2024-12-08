@@ -355,7 +355,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                 val button_text = options[i]?.first ?: ""
                 val handler = Handler(Looper.getMainLooper())
 
-                // Prevent clicking the button twice (which can be done on accident if when spamming the button)
+                // (Attempt to) prevent clicking the button twice (which can be done on accident if when spamming the button)
                 btn.setOnClickListener(null)
 
                 // Update the path and progress to the next story event.
