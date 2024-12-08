@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restart button function
   function restartGame() {
     // Play the click sound when the button is clicked and navigate to next story event
-    buttonClickSound.play(); // Play click sound
     console.log('Restarting game');
     loadGameState("0"); // Load the next game state
   }
@@ -146,6 +145,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }, speed);
   }
 
+  function removeTint() {
+    const tint = gameplayPage.querySelector(".red-tint, .green-tint, .pastel-blue-tint");
+    if (tint) {
+      tint.remove(); // Removes the tint element from the DOM
+    }
+  }
+
   // Show ending
   function addEndingTint(type) {
     // Create the tint div
@@ -170,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mainMenuButton.textContent = "Main Menu";
     mainMenuButton.classList.add("choice-btn");
     mainMenuButton.addEventListener("click", () => {
-      buttonClickSound.play()
+      buttonClickSound.play(); // Play click sound
       location.reload(); // Reload the page to restart the game
     });
 
@@ -183,6 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
     restartButton.textContent = "Restart";
     restartButton.classList.add("choice-btn");
     restartButton.addEventListener("click", () => {
+      buttonClickSound.play(); // Play click sound
+      removeTint(); // Remove any ending tint
       restartGame();
     });
 
@@ -195,6 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
     restartButton.textContent = "Go Back";
     restartButton.classList.add("choice-btn");
     restartButton.addEventListener("click", () => {
+      buttonClickSound.play(); // Play click sound
+      removeTint(); // Remove any ending tint
       loadGameState(path.slice(0, -1))
     });
 
