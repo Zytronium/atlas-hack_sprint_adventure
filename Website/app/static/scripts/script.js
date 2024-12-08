@@ -17,23 +17,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Initialize the audio for button click
-const buttonClickSound = new Audio('sounds/button_click.mp3');
-buttonClickSound.preload = "auto"; // Preload the audio for better performance
-
 document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("start-game");
   const landingPage = document.getElementById("landing-page");
   const gameplayPage = document.getElementById("gameplay-page");
   const gameText = document.getElementById("game-text");
   const choicesContainer = document.getElementById("choices");
-
-  // Play the button click sound on any button click
-  document.querySelectorAll("button").forEach(button => {
-    button.addEventListener("click", () => {
-      buttonClickSound.play();
-    });
-  });
 
   // Start the game when "Enter the Adventure" is clicked
   startButton.addEventListener("click", async () => {
@@ -52,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Loading game state for path:", path);
     try {
-      const docRef = doc(db, "stories", "Sci fi");
+      const docRef = doc(db, "stories", "Sci fi"); // Adjust Firestore path as needed
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
@@ -112,11 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showWinPage(gameState.storyText, "win-image.gif");
     } else {
       gameText.textContent = gameState.storyText;
-      const restartButton = document.createElement("button");
-      restartButton.textContent = "Restart Game";
-      restartButton.onclick = async () => await loadGameState("0"); // Restart the game
-      choicesContainer.innerHTML = ""; // Clear existing buttons
-      choicesContainer.appendChild(restartButton);
+      showRestartButton();  // Show the restart button when no options exist
     }
   }
 
@@ -134,26 +119,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }, speed);
   }
 
-  // Display a bad ending with red tint and a GIF
+  // Show bad ending with red tint and a GIF
   function showBadEnding(storyText, gifSrc) {
     gameplayPage.innerHTML = `
       <div class="red-tint"></div>
       <h1>Game Over</h1>
       <p>${storyText}</p>
       <img src="${gifSrc}" alt="Bad Ending" />
-      <button id="restart-game">Restart</button>
     `;
-    document.getElementById("restart-game").addEventListener("click", () => location.reload());
+    showRestartButton();  // Show restart button after game over
   }
 
-  // Display a win page with a GIF
+  // Show win page with a GIF
   function showWinPage(storyText, gifSrc) {
     gameplayPage.innerHTML = `
       <h1>Congratulations!</h1>
       <p>${storyText}</p>
       <img src="${gifSrc}" alt="You Win" />
-      <button id="restart-game">Play Again</button>
     `;
-    document.getElementById("restart-game").addEventListener("click", () => location.reload());
+    showRestartButton();  // Show restart button after winning
+  }
+
+  // Show the restart button
+  function showRestartButton() {
+    const restartButton = document.createElement("button");
+    restartButton.textContent = "Restart Game";
+    restartButton.classList.add("restart-btn");
+    restartButton.addEventListener("click", () => {
+      location.reload(); // Reload the page to restart the game
+    });
+
+    choicesContainer.innerHTML = ""; // Clear any other buttons
+    choicesContainer.appendChild(restartButton);
   }
 });
