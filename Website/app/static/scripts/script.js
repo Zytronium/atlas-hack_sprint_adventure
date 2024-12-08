@@ -34,10 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load a game state from Firestore
   async function loadGameState(path) {
     // Rickroll for specific paths
-    if (path === "power:021332" || path === "power:021331") {
+    if (path === "021332" || path === "021331") {
       window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Rickroll
       return;
     }
+
+    console.log(path);
 
     console.log("Loading game state for path:", path);
     try {
@@ -67,17 +69,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Process and display the game state
   function handleGameState(gameState, currentPath) {
-    typeText(gameText, gameState.storyText, 25); // Use typewriter effect for text
+    // Use typewriter effect for text
+    typeText(gameText, gameState.storyText, 25);
 
     if (gameState.options) {
-      handleOptions(gameState.options, gameState.optionPaths, currentPath);
+      handleOptions(gameState.options, /*gameState.optionPaths, */currentPath);
+    } else if (["BadEnding", "GoodEnding", "NeutralEnding", "Error"].includes(gameState.type)) {
+      handleEndings(gameState.storyText, gameState.type, currentPath);
     } else {
-      handleEndings(gameState);
+      addBackButton(currentPath);
     }
   }
 
   // Display options as buttons
-  function handleOptions(options, optionPaths, currentPath) {
+  function handleOptions(options, /*optionPaths, */currentPath) {
     // Clear existing buttons
     choicesContainer.innerHTML = "";
 
@@ -102,50 +107,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-/*  // Handle game endings
-  function handleEndings(gameState) {
-    if (gameState.type === "BadEnding") {
-      showBadEnding(gameState.storyText, "bad-ending.gif");
-    } else if (gameState.type === "GoodEnding") {
-      showGoodEnding(gameState.storyText, "good-ending.gif");
-    } else if (gameState.type === "NeutralEnding") {
-      showNeutralEnding(gameState.storyText, "neutral-ending.gif");
-    } else {
-      gameText.textContent = gameState.storyText;
-      showRestartButton();  // Show the restart button when no options exist
-    }
-  }*/
-
   // Restart button function
   function restartGame() {
-    // Reset the game state (you can add any state resetting logic here)
-    document.getElementById('game-text').textContent = "Welcome back! Your journey continues...";
-    document.getElementById('choices').innerHTML = ''; // Clear previous choices
-
-    // Re-hide the gameplay page and show the landing page again
-    document.getElementById('gameplay-page').classList.add('hidden');
-    document.getElementById('landing-page').classList.remove('hidden');
+    // Play the click sound when the button is clicked and navigate to next story event
+    buttonClickSound.play(); // Play click sound
+    console.log('Restarting game');
+    loadGameState("0"); // Load the next game state
   }
 
   // This function will be called when an ending is reached
-  function handleEndings(endingText, choices) {
-    // Display the ending text
-    document.getElementById('game-text').textContent = endingText;
+  function handleEndings(text, type, path) {
+    addEndingTint(type);
 
-    // Clear choices and add a restart button
-    const choicesContainer = document.getElementById('choices');
-    choicesContainer.innerHTML = ''; // Clear previous choices
+    // Clear previous choices
+    choicesContainer.innerHTML = '';
 
-    const restartButton = document.createElement('button');
-    restartButton.textContent = 'Restart Game';
-    restartButton.classList.add('choice-btn');
-    restartButton.addEventListener('click', restartGame);
+    // Add Main Menu Button
+    addMainMenuButton();
 
-    choicesContainer.appendChild(restartButton); // Add the restart button
+    // Add Restart Buttton
+    addRestartButton();
+
+    // Add Back Button
+    addBackButton(path);
   }
 
   // Add typewriter effect for text
-  function typeText(element, text, speed = 10) {
+  function typeText(element, text, speed = 40) {
     let index = 0;
     element.textContent = ""; // Clear existing text
     const interval = setInterval(() => {
@@ -158,49 +146,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }, speed);
   }
 
-  // Show bad ending with red tint and a GIF
-  function showBadEnding(storyText, gifSrc) {
-    gameplayPage.innerHTML = `
-      <div class="red-tint"></div>
-      <h1>Game Over. You got a bad ending.</h1>
-      <p>${storyText}</p>
-      <img src="${gifSrc}" alt="Bad Ending" />
-    `;
-    showRestartButton();  // Show restart button after game over
+  // Show ending
+  function addEndingTint(type) {
+    // Create the tint div
+    const tint = document.createElement("div");
+
+    // Add the appropriate class based on the ending type
+    if (type === "BadEnding" || type === "Error") {
+      tint.classList.add("red-tint");
+    } else if (type === "GoodEnding") {
+      tint.classList.add("green-tint");
+    } else if (type === "NeutralEnding") {
+      tint.classList.add("pastel-blue-tint");
+    }
+
+    // Append the tint to the gameplay page
+    gameplayPage.appendChild(tint);
   }
 
-  // Show win page with a GIF
-  function showGoodEnding(storyText, gifSrc) {
-    gameplayPage.innerHTML = `
-      <div class="green-tint"></div>
-      <h1>Congratulations! You got a good ending.</h1>
-      <p>${storyText}</p>
-      <img src="${gifSrc}" alt="Good Ending" />
-    `;
-    showRestartButton();  // Show restart button after winning
-  }
-
-  // Show win page with a GIF
-  function showNeutralEnding(storyText, gifSrc) {
-    gameplayPage.innerHTML = `
-      <div class="pastel-blue-tint"></div>
-      <h1>The End. You got a neutral ending.</h1>
-      <p>${storyText}</p>
-      <img src="${gifSrc}" alt="Neutral Ending" />
-    `;
-    showRestartButton();  // Show restart button after winning
-  }
-
-  // Show the restart button
-  function showRestartButton() {
-    const restartButton = document.createElement("button");
-    restartButton.textContent = "Restart Game";
-    restartButton.classList.add("restart-btn");
-    restartButton.addEventListener("click", () => {
+  // Show the main menu button
+  function addMainMenuButton() {
+    const mainMenuButton = document.createElement("button");
+    mainMenuButton.textContent = "Main Menu";
+    mainMenuButton.classList.add("choice-btn");
+    mainMenuButton.addEventListener("click", () => {
+      buttonClickSound.play()
       location.reload(); // Reload the page to restart the game
     });
 
-    choicesContainer.innerHTML = ""; // Clear any other buttons
+    choicesContainer.appendChild(mainMenuButton);
+  }
+
+  // Show the restart button
+  function addRestartButton() {
+    const restartButton = document.createElement("button");
+    restartButton.textContent = "Restart";
+    restartButton.classList.add("choice-btn");
+    restartButton.addEventListener("click", () => {
+      restartGame();
+    });
+
+    choicesContainer.appendChild(restartButton);
+  }
+
+  // Show the back button
+  function addBackButton(path) {
+    const restartButton = document.createElement("button");
+    restartButton.textContent = "Go Back";
+    restartButton.classList.add("choice-btn");
+    restartButton.addEventListener("click", () => {
+      loadGameState(path.slice(0, -1))
+    });
+
     choicesContainer.appendChild(restartButton);
   }
 });
