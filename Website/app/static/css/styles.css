@@ -163,7 +163,6 @@ body {
   z-index: -1;
 }
 
-
 /* Green Tint Overlay for Good Ending */
 .green-tint {
   background-color: rgba(0, 217, 0, 0.33); /* green tint */
@@ -174,7 +173,6 @@ body {
   height: 100%;
   z-index: -1;
 }
-
 
 /* Pastel-blue Tint Overlay for Neutral Ending */
 .pastel-blue-tint {

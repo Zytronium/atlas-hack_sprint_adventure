@@ -5,3 +5,4 @@ venv/
 *.log
 firebase_credentials.json
 .idea/
+/Mobile_App/app/release/

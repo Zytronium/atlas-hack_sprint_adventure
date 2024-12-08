@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Handle game endings
+/*  // Handle game endings
   function handleEndings(gameState) {
     if (gameState.type === "BadEnding") {
       showBadEnding(gameState.storyText, "bad-ending.gif");
@@ -114,6 +114,34 @@ document.addEventListener("DOMContentLoaded", () => {
       gameText.textContent = gameState.storyText;
       showRestartButton();  // Show the restart button when no options exist
     }
+  }*/
+
+  // Restart button function
+  function restartGame() {
+    // Reset the game state (you can add any state resetting logic here)
+    document.getElementById('game-text').textContent = "Welcome back! Your journey continues...";
+    document.getElementById('choices').innerHTML = ''; // Clear previous choices
+
+    // Re-hide the gameplay page and show the landing page again
+    document.getElementById('gameplay-page').classList.add('hidden');
+    document.getElementById('landing-page').classList.remove('hidden');
+  }
+
+  // This function will be called when an ending is reached
+  function handleEndings(endingText, choices) {
+    // Display the ending text
+    document.getElementById('game-text').textContent = endingText;
+
+    // Clear choices and add a restart button
+    const choicesContainer = document.getElementById('choices');
+    choicesContainer.innerHTML = ''; // Clear previous choices
+
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Restart Game';
+    restartButton.classList.add('choice-btn');
+    restartButton.addEventListener('click', restartGame);
+
+    choicesContainer.appendChild(restartButton); // Add the restart button
   }
 
   // Add typewriter effect for text
