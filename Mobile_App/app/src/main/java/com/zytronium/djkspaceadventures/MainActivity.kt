@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.zytronium.djkspaceadventures.MusicPlayers.clickSound
 import com.zytronium.djkspaceadventures.MusicPlayers.music
 
-class MainActivity() : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
+class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
     // UI elements
     private lateinit var typeSpeedIncrementer: View
     private lateinit var storyTextView: TextView
