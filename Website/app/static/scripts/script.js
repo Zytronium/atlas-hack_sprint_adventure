@@ -17,6 +17,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Initialize the audio for button click
+const buttonClickSound = new Audio('sounds/button_click.mp3');
+buttonClickSound.preload = "auto"; // Preload the audio for better performance
+
 document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("start-game");
   const landingPage = document.getElementById("landing-page");
@@ -24,14 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameText = document.getElementById("game-text");
   const choicesContainer = document.getElementById("choices");
 
-  // Load the button click sound
-  const buttonClickSound = new Audio('sounds/button_click.mp3'); // Ensure correct path
+  // Play the button click sound on any button click
+  document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      buttonClickSound.play();
+    });
+  });
 
   // Start the game when "Enter the Adventure" is clicked
   startButton.addEventListener("click", async () => {
-    // Play the button click sound
-    buttonClickSound.play();
-
     landingPage.style.display = "none"; // Hide the landing page
     gameplayPage.style.display = "block"; // Show the gameplay page
     await loadGameState("0"); // Start with the initial game state
@@ -47,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Loading game state for path:", path);
     try {
-      const docRef = doc(db, "stories", "Sci fi"); // Adjust Firestore path as needed
+      const docRef = doc(db, "stories", "Sci fi");
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
