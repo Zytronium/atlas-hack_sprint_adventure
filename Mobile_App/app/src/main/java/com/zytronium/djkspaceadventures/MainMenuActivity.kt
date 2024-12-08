@@ -20,6 +20,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.zytronium.djkspaceadventures.MusicPlayers.clickSound
 import com.zytronium.djkspaceadventures.MusicPlayers.music
+import com.zytronium.djkspaceadventures.MusicPlayers.universeEntrance
 
 class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks {
 
@@ -42,6 +43,7 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
             music = MediaPlayer.create(this, R.raw.background_music) // TODO
             music!!.isLooping = true
             clickSound = MediaPlayer.create(this, R.raw.click)
+            universeEntrance = MediaPlayer.create(this, R.raw.universe_entrance_sound)
 
             // Play the background music
             playMusic()
@@ -133,6 +135,7 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
 
     private fun playSound() {
         clickSound!!.start()
+        universeEntrance!!.start()
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -146,6 +149,7 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
     override fun onActivityResumed(activity: Activity) {
         backgroundAnimation.start()
         playMusic()
+
     }
 
     override fun onActivityPaused(activity: Activity) {
