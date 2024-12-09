@@ -68,9 +68,24 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17sp"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="19dp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/about_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="About the Game"
+        android:background="#00000000"
+        android:padding="8dp"
+        android:scaleX="1.125"
+        android:scaleY="1.125"
+        android:src="@drawable/baseline_info_24"
+        android:onClick="about"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.zytronium.djkspaceadventures.ScaledVideoView
         android:id="@+id/backgroundAnimation"

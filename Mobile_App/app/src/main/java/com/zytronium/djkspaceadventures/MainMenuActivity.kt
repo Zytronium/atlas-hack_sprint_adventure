@@ -69,7 +69,8 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
         // Play a click sound, briefly animate the button, and start the text adventure game
 
         // Play the click sound effect (What did you think this does? Download more RAM?)
-        playSound()
+        playClickSound()
+        playStartSound()
 
         // Vibrate
         vibrate(75L)
@@ -111,6 +112,51 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
         // Delays are intentionally shorter than the animation durations because there seems to be a weird additional delay
     }
 
+    fun about(view: View) {
+        // Play a click sound, briefly animate the button, and start the text adventure game
+
+        // Play the click sound effect (What did you think this does? Download more RAM?)
+        playClickSound()
+
+        // Vibrate
+        vibrate(40L)
+
+        // Create animators for scale X and scale Y for the button being pressed
+        val animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1f, 1.125f)
+        val animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1f, 1.125f)
+
+        // Set the animation duration
+        animatorX.duration = 100
+        animatorY.duration = 100
+
+        // Play the animation
+        animatorX.start()
+        animatorY.start()
+
+        val handler = Handler(Looper.getMainLooper())
+        // Second half of animation: retuning scale to 1
+        handler.postDelayed({
+            val animator2X = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.125f, 1f)
+            val animator2Y = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.125f, 1f)
+
+            // Intentionally slightly shorter duration than first half
+            animator2X.duration = 75
+            animator2Y.duration = 75
+
+            animator2X.start()
+            animator2Y.start()
+
+            val handler2 = Handler(Looper.getMainLooper())
+            handler2.postDelayed({
+                // Go to the main game activity and close the main menu
+                switchingActivities = true
+                startActivity(Intent(this@MainMenuActivity, AboutActivity::class.java))
+            }, 45L)
+        }, 70L)
+
+        // Delays are intentionally shorter than the animation durations because there seems to be a weird additional delay
+    }
+
     private fun vibrate(time: Long) {
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (vibrator.hasVibrator()) {
@@ -133,8 +179,11 @@ class MainMenuActivity : AppCompatActivity(), Application.ActivityLifecycleCallb
         music!!.pause()
     }
 
-    private fun playSound() {
+    private fun playClickSound() {
         clickSound!!.start()
+    }
+
+    private fun playStartSound() {
         universeEntrance!!.start()
     }
 
