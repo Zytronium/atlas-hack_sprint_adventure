@@ -68,18 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Process and display the game state
-  function handleGameState(gameState, currentPath) {
-    // Use typewriter effect for text
-    typeText(gameText, gameState.storyText, 25);
+function handleGameState(gameState, currentPath) {
+  // Use typewriter effect for text
+  typeText(gameText, gameState.storyText, 25);
 
-    if (gameState.options) {
-      handleOptions(gameState.options, /*gameState.optionPaths, */currentPath);
-    } else if (["BadEnding", "GoodEnding", "NeutralEnding", "Error"].includes(gameState.type)) {
-      handleEndings(gameState.storyText, gameState.type, currentPath);
-    } else {
-      addBackButton(currentPath);
-    }
+  if (gameState.options) {
+    handleOptions(gameState.options, currentPath);
+  } else if (["BadEnding", "GoodEnding", "NeutralEnding", "Error"].includes(gameState.type)) {
+    handleEndings(gameState.storyText, gameState.type, currentPath);
+  } else {
+    addBackButton(currentPath);
   }
+}
 
   // Display options as buttons
   function handleOptions(options, /*optionPaths, */currentPath) {
@@ -131,19 +131,26 @@ document.addEventListener("DOMContentLoaded", () => {
     addBackButton(path);
   }
 
-  // Add typewriter effect for text
-  function typeText(element, text, speed = 40) {
-    let index = 0;
-    element.textContent = ""; // Clear existing text
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        element.textContent += text[index];
-        index++;
-      } else {
-        clearInterval(interval); // Stop once all text is displayed
-      }
-    }, speed);
+  // Add typewriter effect for text with proper handling of interruptions
+function typeText(element, text, speed = 40) {
+  let index = 0; // Index for the current character
+  element.textContent = ""; // Clear existing text
+  if (window.typingInterval) {
+    clearInterval(window.typingInterval); // Clear any existing typing interval
   }
+
+  // Start typing effect
+  window.typingInterval = setInterval(() => {
+    if (index < text.length) {
+      element.textContent += text[index]; // Add next character
+      index++;
+    } else {
+      clearInterval(window.typingInterval); // Stop once all text is displayed
+      window.typingInterval = null;
+    }
+  }, speed);
+}
+
 
   function removeTint() {
     const tint = gameplayPage.querySelector(".red-tint, .green-tint, .pastel-blue-tint");
