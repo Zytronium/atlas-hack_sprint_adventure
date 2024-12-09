@@ -31,27 +31,60 @@ document.addEventListener("DOMContentLoaded", () => {
     await loadGameState("0"); // Start with the initial game state
   });
 
-  // Load a game state from Firestore
   async function loadGameState(path) {
+    const themeMusic = document.getElementById("theme-music"); // Reference the theme music element
+  
     // Rickroll for specific paths
     if (path === "021332" || path === "021331") {
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Rickroll
-      return;
+      // Stop the theme music
+      if (themeMusic) {
+        themeMusic.pause();
+        themeMusic.currentTime = 0; // Reset the theme music
+      }
+  
+      // Create and display the Rickroll video
+      const rickrollContainer = document.createElement("div");
+      rickrollContainer.style.position = "fixed";
+      rickrollContainer.style.top = "0";
+      rickrollContainer.style.left = "0";
+      rickrollContainer.style.width = "100%";
+      rickrollContainer.style.height = "100%";
+      rickrollContainer.style.backgroundColor = "black";
+      rickrollContainer.style.zIndex = "9999";
+  
+      const rickrollVideo = document.createElement("video");
+      rickrollVideo.src = "./Website/app/static/sounds/rickrollshort.mp4"; // Local video path
+      rickrollVideo.autoplay = true;
+      rickrollVideo.controls = false;
+      rickrollVideo.style.width = "100%";
+      rickrollVideo.style.height = "100%";
+      rickrollVideo.style.objectFit = "cover";
+  
+      // Remove the video after it ends
+      rickrollVideo.addEventListener("ended", () => {
+        rickrollContainer.remove();
+        location.reload(); // Reload to restart the game
+        }
+      );
+  
+      // Append the video to the container and add it to the body
+      rickrollContainer.appendChild(rickrollVideo);
+      document.body.appendChild(rickrollContainer);
+  
+      return; // Stop further processing
     }
-
-    console.log(path);
-
+  
     console.log("Loading game state for path:", path);
     try {
       const docRef = doc(db, "stories", "Sci fi"); // Adjust Firestore path as needed
       const docSnap = await getDoc(docRef);
-
+  
       if (!docSnap.exists()) {
         console.error("No game state document found!");
         gameText.textContent = "Game state not found!";
         return;
       }
-
+  
       const gameStateData = docSnap.data();
       const gameState = gameStateData.events[path];
       if (!gameState) {
@@ -59,13 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
         gameText.textContent = `Error 404: Story event not found.`;
         return;
       }
-
+  
       handleGameState(gameState, path);
     } catch (error) {
       console.error("Error loading game state: ", error);
       gameText.textContent = "An error occurred while loading the game state.";
     }
   }
+  
 
   // Process and display the game state
 function handleGameState(gameState, currentPath) {
