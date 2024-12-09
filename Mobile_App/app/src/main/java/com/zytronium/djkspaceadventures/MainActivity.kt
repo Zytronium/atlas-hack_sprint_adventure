@@ -273,11 +273,11 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                 // Check if the document exists
                 if (snapshot.exists()) {
                     // Use the snapshot data to convert into a StoryEvent object
-                    var story = Story(title = "Error", events = mapOf("0" to StoryEvent(path = currentPath, type = StoryEventType.Error, storyText = "An error has occurred loading the story database. Please try again later. If the issue persists, try updating the app.")))
+                    var story: Story? = Story(title = "Error", events = mapOf("0" to StoryEvent(path = currentPath, type = StoryEventType.Error, storyText = "An error has occurred loading the story database. Please try again later. If the issue persists, try updating the app.")))
                     try {
-                        story = snapshot.toObject(Story::class.java) ?: story
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "Error: $e", Toast.LENGTH_LONG).show()
+                        story = snapshot.toObject(Story::class.java)
+                    } catch (e: RuntimeException) {
+                        println(e)
                     }
 
                     // Check if the event was successfully mapped
