@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rickrollContainer.style.zIndex = '9999';
 
       const rickrollVideo = document.createElement('video');
-      rickrollVideo.src = './Website/app/static/sounds/rickrollshort.mp4'; // Local video path
+      rickrollVideo.src = './Website/app/static/video/rickrollshort.mp4'; // Local video path
       rickrollVideo.autoplay = true;
       rickrollVideo.controls = false;
       rickrollVideo.style.width = '100%';
@@ -249,5 +249,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     choicesContainer.appendChild(restartButton);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const aboutButton = document.getElementById('about-button'); // Reference the About button
+  const startButton = document.getElementById('start-game');
+  const landingPage = document.getElementById('landing-page');
+  const gameplayPage = document.getElementById('gameplay-page');
+
+  // Hide the About button when the game starts
+  startButton.addEventListener('click', () => {
+    if (aboutButton) {
+      aboutButton.style.display = 'none'; // Hide About button
+    }
+  });
+
+  // Ensure the About button is visible on the landing page
+  if (landingPage.style.display !== 'none') {
+    aboutButton.style.display = 'block'; // Show About button
   }
 });
