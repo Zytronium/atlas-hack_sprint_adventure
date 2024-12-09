@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">DJK Space Adventures</string>
+    <string name="app_name">Astralis</string>
     <string name="story_text">Loading…</string>
-    <string name="main_menu_game_title">DJK Space Adventures</string>
-    <string name="main_menu_subtitle">Your journey begins in a galaxy far, far away…</string>
-    <string name="start_button_text">Enter the Universe</string>
+    <string name="main_menu_game_title">Astralis: The Text Adventure</string>
+    <string name="main_menu_subtitle">Venture into the unknown, where choices forge your path among the stars.</string>
+    <string name="start_button_text">Step Into The Void</string>
 </resources>

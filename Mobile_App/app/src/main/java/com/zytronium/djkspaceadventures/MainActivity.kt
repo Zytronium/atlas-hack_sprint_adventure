@@ -110,7 +110,8 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
             ":" to 100,
             "?" to 115,
             "!" to 115,
-            "—" to 100
+            "—" to 100,
+            "\n" to 250
         ),
         typingPath: String,
         typeProgress: Int = 0
