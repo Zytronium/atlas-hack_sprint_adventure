@@ -79,9 +79,9 @@ body {
   padding: 1rem; /* Add padding inside the text area for better spacing */
   width: 80%; /* Reduce width to bring in margins */
   max-width: 700px; /* Set a maximum width for large screens */
-  background-color: rgba(255, 255, 255, 0.1); /* Optional: subtle background for readability */
+  background-color: rgba(176, 176, 176, 0.1); /* Optional: subtle background for readability */
   border-radius: 10px; /* Optional: rounded corners */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Optional: subtle shadow for emphasis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: subtle shadow for emphasis */
 }
 
 

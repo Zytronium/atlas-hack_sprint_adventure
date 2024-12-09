@@ -18,6 +18,7 @@
         android:onClick="incrementTypingSpeed"/>
 
     <TextView
+        android:background="@drawable/rounded_background"
         android:id="@+id/story_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,28 +50,28 @@
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Loading."
             android:backgroundTint="@color/choice_btn_color"
+            android:text="Loading."
             android:visibility="visible"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Loading.."
             android:backgroundTint="@color/choice_btn_color"
+            android:text="Loading.."
             android:visibility="visible"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Loading..."
             android:backgroundTint="@color/choice_btn_color"
+            android:text="Loading..."
             android:visibility="visible"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/button4"
@@ -79,7 +80,7 @@
             android:text="Loading..."
             android:backgroundTint="@color/choice_btn_color"
             android:visibility="gone"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/button5"
@@ -88,7 +89,7 @@
             android:text="Loading..."
             android:backgroundTint="@color/choice_btn_color"
             android:visibility="gone"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
 
         <Button
             android:id="@+id/button6"
@@ -97,7 +98,7 @@
             android:text="Loading..."
             android:backgroundTint="@color/choice_btn_color"
             android:visibility="gone"
-            app:cornerRadius="18dp" />
+            app:cornerRadius="16dp" />
     </LinearLayout>
 
     <com.zytronium.djkspaceadventures.ScaledVideoView

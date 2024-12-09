@@ -5,6 +5,7 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="text_box_background">#21B0B0B0</color>
     <color name="background_normal">#0DA3BCC2</color>
     <color name="background_main_menu">#3093B5BA</color>
     <color name="background_neutral_ending">#4099B9C2</color>

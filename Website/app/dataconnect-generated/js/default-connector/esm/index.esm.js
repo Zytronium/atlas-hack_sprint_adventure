@@ -5,4 +5,3 @@ export const connectorConfig = {
   service: 'atlas-hack_sprint_adventure-1',
   location: 'us-central1'
 };
-
