@@ -35,12 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadGameState (path) {
     const themeMusic = document.getElementById('theme-music'); // Reference the theme music element
 
-    // Rickroll for specific paths
-    if (path === '021332' || path === '021331') {
+    // Rickroll for specific path
+    if (path === '02134') {
       // Stop the theme music
       if (themeMusic) {
         themeMusic.pause();
-        themeMusic.currentTime = 0; // Reset the theme music
       }
 
       // Create and display the Rickroll video
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rickrollContainer.style.width = '100%';
       rickrollContainer.style.height = '100%';
       rickrollContainer.style.backgroundColor = 'black';
-      rickrollContainer.style.zIndex = '9999';
+      rickrollContainer.style.zIndex = '10';
 
       const rickrollVideo = document.createElement('video');
       rickrollVideo.src = './Website/app/static/sounds/rickrollshort.mp4'; // Local video path
@@ -64,15 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Remove the video after it ends
       rickrollVideo.addEventListener('ended', () => {
         rickrollContainer.remove();
-        location.reload(); // Reload to restart the game
+        themeMusic.play()
       }
       );
 
       // Append the video to the container and add it to the body
       rickrollContainer.appendChild(rickrollVideo);
       document.body.appendChild(rickrollContainer);
-
-      return; // Stop further processing
     }
 
     console.log('Loading game state for path:', path);
@@ -89,8 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const gameStateData = docSnap.data();
       const gameState = gameStateData.events[path];
       if (!gameState) {
-        console.error(`No game state found for path: ${path}`);
-        gameText.textContent = 'Error 404: Story event not found.';
+        let addedText = '' // nothing by default
+        if (path === '02132')
+          addedText = '\n\n(Intentional Game Design)' // Add this to the error message for a specific path to indicate this 404 is intentional
+
+        console.error(`No game state found for path: ${path}`); // Log error in console
+        gameText.textContent = `Error 404: Story event not found.${addedText}`; // Set game text to indicate 404 error.
         return;
       }
 

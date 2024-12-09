@@ -14,6 +14,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
     private lateinit var option6Btn: TextView
     private lateinit var background: ConstraintLayout
     private lateinit var backgroundAnimation: ScaledVideoView
+    private lateinit var rickroll: ScaledVideoView
 
     // Misc variables
     private lateinit var firestore: FirebaseFirestore
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
     private var stories: MutableMap<String, Story> = emptyMap<String, Story>().toMutableMap()
     private var switchingActivities = false
     private var typeSpeed: Int = 1 // 1 = Normal, 2 = Fast, 3 = Instant
+    private var typingPaths: Map<View, String> = emptyMap() // map of text elements to paths that are currently having their story text being typed onto the given text element. When something starts typing to a text element, it updates this map and overwrites any existing entries for this text element, alerting the app to stop typing the last string.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
         option5Btn = findViewById(R.id.button5)
         option6Btn = findViewById(R.id.button6)
         backgroundAnimation = findViewById(R.id.backgroundAnimation)
+        rickroll = findViewById(R.id.rickroll_video)
         background = findViewById(R.id.main)
 
         // Register this as a callback to monitor the application's activity lifecycle events, allowing to, for example, pause music when the app looses focus
@@ -73,6 +77,12 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
             backgroundAnimation.setVideoDimensions(mediaPlayer.videoWidth, mediaPlayer.videoHeight)
             mediaPlayer.isLooping = true
             backgroundAnimation.requestLayout()
+        }
+
+        // Setup the rickroll player
+        rickroll.setOnPreparedListener { mediaPlayer ->
+            rickroll.setVideoDimensions(mediaPlayer.videoWidth, mediaPlayer.videoHeight)
+            mediaPlayer.isLooping = false
         }
 
         // Provide the background video source video and start the video
@@ -102,26 +112,48 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
             "!" to 115,
             "—" to 100
         ),
+        typingPath: String,
         typeProgress: Int = 0
     ) {
         // Stop if the message has been fully typed
         if (typeProgress >= msg.length) {
-            typeSpeedIncrementer.visibility = View.GONE
-            typeSpeed = 1
+            typeSpeedIncrementer.visibility = View.GONE // Remove the type speed incrementer
+            typeSpeed = 1 // Reset typing speed
+
+            if (typingPath in typingPaths.values) // Only if this is still in typingPaths, ... (it might not be if the user clicked a button right when the last character was typed)
+                typingPaths = typingPaths.minus(textElement) // Remove this from the typingPaths map
+
+            return // Stop typing
+        }
+
+        // Clear the game text the message hasn't started typing yet
+        if (typeProgress == 0) {
+            textElement.text = "" // Clear text
+            typeSpeed = 1 // Reset typing speed
+
+            // Add this textElement and path to typingPaths or replace textElement's entry with this path to stop typing previous string
+            if (textElement !in typingPaths.keys) {
+                typingPaths = typingPaths.plus(Pair(textElement, typingPath)) // Add to typingPaths
+            } else {
+                typingPaths = typingPaths.minus(textElement) // Remove last message from typingPaths
+                typingPaths = typingPaths.plus(Pair(textElement, typingPath)) // Add this to typingPaths in its place
+            }
+        }
+
+        // Stop typing if something else has started typing to this text element
+        if (typingPaths[textElement] != typingPath) {
             return
         }
 
+        // Ensure the type speed incrementer is visible
         typeSpeedIncrementer.visibility = View.VISIBLE
 
-        if (typeProgress == 0)
-            textElement.text = ""
-
-        // If typing effect is off in settings or type speed is instant (3+), instantly type the entire message
-        if(/*!settings.doTypeEffect ||*/ typeSpeed >= 3) {
+        // If type speed is instant (3+), instantly type the entire message
+        if(typeSpeed >= 3) {
             textElement.text = pauseChar?.let { msg.replace(it, "") }
             typeSpeedIncrementer.visibility = View.GONE
             typeSpeed = 1
-        } else { // If the typing effect is turned on and the type speed is not instant, ...
+        } else { // If the type speed is not instant, ...
             val char = msg.toCharArray()[typeProgress]
 
             // If the current char is the pause char, then pause briefly and skip this char
@@ -147,6 +179,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                             pauseChar,
                             autoPauseOnPunctuation,
                             punctuationPauseMap,
+                            typingPath,
                             typeProgress + 1
                         )
                     }, delay.toLong())
@@ -162,6 +195,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                         pauseChar,
                         autoPauseOnPunctuation,
                         punctuationPauseMap,
+                        typingPath,
                         typeProgress + 1
                     )
                 }
@@ -202,6 +236,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                             pauseChar,
                             autoPauseOnPunctuation,
                             punctuationPauseMap,
+                            typingPath,
                             typeProgress + 1
                         )
                     }, delay.toLong())
@@ -222,6 +257,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                         pauseChar,
                         autoPauseOnPunctuation,
                         punctuationPauseMap,
+                        typingPath,
                         typeProgress + 1
                     )
                 }
@@ -236,7 +272,12 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
                 // Check if the document exists
                 if (snapshot.exists()) {
                     // Use the snapshot data to convert into a StoryEvent object
-                    val story = snapshot.toObject(Story::class.java)
+                    var story = Story(title = "Error", events = mapOf("0" to StoryEvent(path = currentPath, type = StoryEventType.Error, storyText = "An error has occurred loading the story database. Please try again later. If the issue persists, try updating the app.")))
+                    try {
+                        story = snapshot.toObject(Story::class.java) ?: story
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Error: $e", Toast.LENGTH_LONG).show()
+                    }
 
                     // Check if the event was successfully mapped
                     if (story != null) {
@@ -302,9 +343,30 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
         val event = getCurrentEvent()
 
         // Load the data for the current story event into the UI elements (story text & buttons)
-        type(event.storyText, storyTextView)
+        type(event.storyText, storyTextView, typingPath = event.path)
         updateBackground()
         updateOptions(event)
+
+        // Rickroll for specific path
+        if (currentPath == "power:02134") {
+            // Make the rickroll video view appear
+            rickroll.visibility = View.VISIBLE
+            rickroll.requestLayout()
+
+            // Prevent clicking buttons that are behind the video
+            rickroll.setOnClickListener(null)
+
+            // Make the rickroll disappear when it completes and resume background music
+            rickroll.setOnCompletionListener {
+                rickroll.visibility = View.GONE // Remove rickroll video
+                music!!.start() // Resume background music
+            }
+
+            // Provide the rickroll video source video and start the video
+            rickroll.setVideoURI(parse("android.resource://" + packageName + "/" + R.raw.rickroll_short))
+            rickroll.start() // Play rickroll
+            music!!.pause() // Pause background music
+        }
     }
 
     private fun updateBackground() {
@@ -337,7 +399,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
         return StoryEvent(
             currentStoryRoot().replace("0", "NotFound"),
             StoryEventType.Error,
-            "Error 404: Story event not found."
+            "Error 404: Story event not found." + if (currentPath == "power:02132") "\n\n(Intentional Game Design)" else ""
         )
     }
 
@@ -351,8 +413,8 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
             btn.text = options[i]?.first
             btn.visibility = if (options[i]?.first == null) View.GONE else View.VISIBLE
             btn.setOnClickListener {
-                val path = options[i]?.second ?: currentPath // "Menu:0"
-                val button_text = options[i]?.first ?: ""
+                val path = options[i]?.second ?: currentPath // get path from options; default to current path if null (which would make the button do nothing)
+                val button_text = options[i]?.first ?: "" // get button text from options; default to no text if null
                 val handler = Handler(Looper.getMainLooper())
 
                 // (Attempt to) prevent clicking the button twice (which can be done on accident if when spamming the button)
@@ -360,7 +422,7 @@ class MainActivity : AppCompatActivity(), Application.ActivityLifecycleCallbacks
 
                 // Update the path and progress to the next story event.
                 currentPath = path
-                println("button pressed. New path: $currentPath") // TODO: debug code; remove later
+                println("Button pressed. New path: $currentPath")
 
                 // Play a click sound, briefly animate button, and start the text adventure game
 
