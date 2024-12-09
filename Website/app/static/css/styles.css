@@ -115,13 +115,13 @@ body {
 
 #game-text {
   font-size: 1.5rem;
-  margin: 1rem auto; /* Center the text vertically and horizontally */
-  padding: 1rem; /* Add padding inside the text area for better spacing */
-  width: 80%; /* Reduce width to bring in margins */
-  max-width: 700px; /* Set a maximum width for large screens */
-  background-color: rgba(176, 176, 176, 0.1); /* Optional: subtle background for readability */
-  border-radius: 10px; /* Optional: rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: subtle shadow for emphasis */
+  margin: 1rem auto;
+  padding: 1rem;
+  width: 80%;
+  max-width: 700px;
+  background-color: rgba(176, 176, 176, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
