@@ -23,9 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const gameplayPage = document.getElementById("gameplay-page");
   const gameText = document.getElementById("game-text");
   const choicesContainer = document.getElementById("choices");
+  const themeMusic = document.getElementById("theme-music");
 
   // Start the game when "Enter the Adventure" is clicked
-  startButton.addEventListener("click", async () => {
+  startButton.addEventListener("click", async () => { 
     landingPage.style.display = "none"; // Hide the landing page
     gameplayPage.style.display = "block"; // Show the gameplay page
     await loadGameState("0"); // Start with the initial game state
