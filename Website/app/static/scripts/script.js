@@ -285,4 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     backgroundMusic.play();
+
+
+    console.log('Test 123'); // Test to see if GitHub Pages has updated yet
+
 });
