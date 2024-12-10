@@ -45,33 +45,22 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/start_game_btn_color"
-            android:onClick="back"
-            android:padding="15dp"
-            android:text="Back to Game"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:cornerRadius="17dp" />
     </LinearLayout>
 
     <!-- Main Content -->
     <ScrollView
         android:id="@+id/about_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@id/main_header"
         android:padding="16dp"
         android:background="@drawable/rounded_background2"
         android:backgroundTint="#000000"
         android:elevation="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginStart="7.5dp"
+        android:layout_marginEnd="7.5dp"
+        app:layout_constraintBottom_toTopOf="@id/back_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_header"
@@ -122,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
-                android:text="Astralis: The Text Adventure was brought to life by a passionate team of three developers. Zytronium spearheaded the Android app development. John Wilson ensured the website's interactivity. Khiry Dixon-Manning managed the database integration. Their collaborative efforts bring you this immersive experience."
+                android:text="Astralis: The Text Adventure was brought to life by a passionate team of three developers, each contributing their unique skills to create an immersive experience:\n\n&quot;Zytronium&quot;: The visionary behind the game, Zytronium conceived the idea of a text adventure that seamlessly integrates an Android app, a database, and a web app. He spearheaded the development of the Android app, laying the foundation for the game\'s interactive storytelling. He also made many improvements to the website, fixing bugs and polishing the UI. \n\nJohn Wilson: As the architect of the website, John designed and implemented the game\'s web interface and its core functionality, ensuring players have an engaging and intuitive experience. \nKhiry Dixon-Manning: The database wizard, Khiry developed and managed the game's database. He also established the crucial connections between the web app and the database, enabling seamless data flow and interactivity. \n\nThe team drew inspiration from classic sci-fi adventures and cutting-edge technology, combining their talents to craft a unique journey into the stars. Their collaborative effort highlights the power of teamwork and creativity. Thank you for stepping into the void with us. We hope you enjoy the adventure as much as we enjoyed creating it!"
                 android:textColor="#FFFFFF" />
 
             <!-- Download Link Section -->
@@ -143,7 +132,29 @@
                 android:autoLink="web"
                 android:gravity="center"
                 android:linksClickable="true"
-                android:text="https://zytronium.github.io/atlas-hack_sprint_adventure/index.html" />
+                android:text="https://zytronium.github.io/atlas-hack_sprint_adventure/" />
+
         </LinearLayout>
+
     </ScrollView>
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/start_game_btn_color"
+        android:onClick="back"
+        android:padding="15dp"
+        android:layout_marginBottom="12.5dp"
+        android:text="Back to Game"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/about_content" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
