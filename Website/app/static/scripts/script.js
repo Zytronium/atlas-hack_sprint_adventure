@@ -40,14 +40,13 @@ muteButton.addEventListener('click', () => {
 // Function to toggle mute
 function toggleMute () {
     isMuted = !isMuted;
-    // themeMusic.muted = isMuted;
+    themeMusic.muted = isMuted;
     soundIcon.src = isMuted
         ? './Website/app/static/icons/sound_off.png'
         : './Website/app/static/icons/sound_on.png';
 }
 
 function playMusic () {
-    themeMusic.muted = true;
     themeMusic.play().then(() => {
         console.log("Background music started.");
         clickToStart.style.opacity = '1';
