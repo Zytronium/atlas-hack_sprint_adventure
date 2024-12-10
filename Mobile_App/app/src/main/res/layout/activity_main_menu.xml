@@ -35,8 +35,9 @@
             android:textColor="@android:color/white"
             android:textSize="50sp"
             android:textStyle="bold"
-            android:shadowColor="@color/highlighted_text2"
-            android:shadowRadius="18"/>
+
+            android:shadowColor="#5AD6FF"
+            android:shadowRadius="25"/>
 
         <!-- Subtitle/Description -->
         <TextView

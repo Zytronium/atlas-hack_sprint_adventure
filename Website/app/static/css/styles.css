@@ -1,233 +1,241 @@
 /* Basic page layout */
 body {
-  margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  background: #000;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
 /* Header Styles */
 #main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 20px;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    z-index: 1000;
 }
 
 .game-title {
-  font-size: 1.5rem;
-  font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
 }
 
 #about-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-family: 'Orbitron', sans-serif;
-  background-color: #ffcc00;
-  color: #000;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-  margin-right: auto;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    margin-right: auto;
 }
 
 #about-button:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
-
 #background-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
 }
 
 /* Landing Page Styles */
 #landing-page {
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: #fff;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    position: relative;
+    padding-top: 15%;
 }
 
 #landing-page h1 {
-  font-size: 3rem;
-  margin: 0.5rem 0;
+    font-size: 3rem;
+    margin: 0.5rem 0;
+    text-shadow: 0 0 8px rgba(90, 214, 255, 0.75),
+    0 0 15px rgba(90, 214, 255, 0.6),
+    0 0 30px rgba(90, 214, 255, 0.5);
 }
 
 #landing-page p {
-  font-size: 1.5rem;
-  margin: 1rem 0;
+    font-size: 1.5rem;
+    margin: 2rem 0 10%;
 }
 
 #start-game {
-  padding: 1rem 2rem;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.2rem;
-  background-color: #ffcc00;
-  color: #000;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+    align-self: center;
+    padding: 1rem 2rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    background-color: #ffcc00;
+    color: #000;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 }
 
 #start-game:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 /* Gameplay Page Styles */
 #gameplay-page {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  display: none; /* Initially hidden */
-  background-color: rgba(0, 0, 0, 0.7); /* Dark overlay for better text visibility */
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none; /* Initially hidden */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay for better text visibility */
 }
 
 .game-container {
-  padding: 2rem;
+    padding: 2rem;
 }
 
 #game-text {
-  font-size: 1.5rem;
-  margin: 1rem auto;
-  padding: 1rem;
-  width: 80%;
-  max-width: 700px;
-  background-color: rgba(176, 176, 176, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 1.5rem;
+    margin: 1rem auto;
+    padding: 1rem;
+    width: 80%;
+    max-width: 700px;
+    background-color: rgba(176, 176, 176, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-
 #choices {
-  margin-top: 2rem;
+    margin-top: 2rem;
 }
 
 /* Style for choice buttons */
 .choice-btn {
-  margin: 0.5rem;
-  padding: 1rem;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.2rem;
-  background-color: #ff5722;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+    margin: 0.5rem;
+    padding: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    background-color: #ff5722;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 }
 
 .choice-btn:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 /* Centering content */
 .container {
-  text-align: center;
-  z-index: 1;
+    text-align: center;
+    z-index: 1;
 }
 
 /* Media Queries for responsiveness */
 @media (max-width: 768px) {
-  #landing-page h1 {
-    font-size: 2.5rem;
-  }
-  #landing-page p {
-    font-size: 1.2rem;
-  }
-  #start-game {
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
-  }
-  #game-text {
-    font-size: 1.2rem;
-  }
-  .choice-btn {
-    font-size: 1rem;
-    padding: 0.8rem;
-  }
+    #landing-page h1 {
+        font-size: 2.5rem;
+    }
+
+    #landing-page p {
+        font-size: 1.2rem;
+    }
+
+    #start-game {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    #game-text {
+        font-size: 1.2rem;
+    }
+
+    .choice-btn {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
 }
 
 @media (max-width: 480px) {
-  #landing-page h1 {
-    font-size: 2rem;
-  }
-  #landing-page p {
-    font-size: 1rem;
-  }
-  #start-game {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-  }
-  #game-text {
-    font-size: 1rem;
-  }
-  .choice-btn {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
+    #landing-page h1 {
+        font-size: 2rem;
+    }
+
+    #landing-page p {
+        font-size: 1rem;
+    }
+
+    #start-game {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+    }
+
+    #game-text {
+        font-size: 1rem;
+    }
+
+    .choice-btn {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
 }
 
 /* Red Tint Overlay for Bad Ending */
 .red-tint {
-  /*
-  * Note: the hash values in Mobile_App/app/src/main/res/values/colors.xml work slightly
-  * differently than hash values in this file. The first 2 characters in colors.xml are
-  * for the transparency, while the last 2 here are for that.
-  */
-  background-color: rgba(199, 0, 0, 0.33); /* Corrected red tint */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    /*
+    * Note: the hash values in Mobile_App/app/src/main/res/values/colors.xml work slightly
+    * differently than hash values in this file. The first 2 characters in colors.xml are
+    * for the transparency, while the last 2 here are for that.
+    */
+    background-color: rgba(199, 0, 0, 0.33); /* red tint */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 /* Green Tint Overlay for Good Ending */
 .green-tint {
-  background-color: rgba(0, 217, 0, 0.33); /* green tint */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    background-color: rgba(0, 217, 0, 0.33); /* green tint */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 /* Pastel-blue Tint Overlay for Neutral Ending */
 .pastel-blue-tint {
-  background-color: rgba(153, 185, 194, 0.25); /* light pastel-blue tint */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+    background-color: rgba(153, 185, 194, 0.25); /* light pastel-blue tint */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }

@@ -13,10 +13,11 @@
     padding: 0 20px;
     z-index: 100;
     box-shadow: 0 2px 5px rgba(228, 224, 224, 0.5);
-  }
+}
 
-  #about-content {
+#about-content {
     position: relative;
+    font-family: 'Orbitron', sans-serif;
     text-align: center;
     margin: auto;
     color: #ffffff;
@@ -29,27 +30,27 @@
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-  }
-  
-  .header-container {
+}
+
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  }
-  
-  .game-title {
+}
+
+.game-title {
     font-size: 1.5rem;
     justify-content: center;
     text-align: center;
     position: relative;
-    margin: 20px 0 0; 
+    margin: 20px 0 0;
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-    margin-right:auto;
-  }
-  
-  #back-button {
+    margin-right: auto;
+}
+
+#back-button {
     padding: 0.5rem 1rem;
     font-size: 1rem;
     font-family: 'Orbitron', sans-serif;
@@ -59,14 +60,14 @@
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    margin-right:0%;
-  }
-  
-  .back-button:hover {
-    transform: scale(1.1);
-  }
+    margin-right: 0%;
+}
 
-  #background-video {
+#back-button:hover {
+    transform: scale(1.1);
+}
+
+#background-video {
     position: fixed;
     top: 0;
     left: 0;
@@ -74,5 +75,5 @@
     height: 100%;
     object-fit: cover;
     z-index: -2;
-  }
+}
   
