@@ -7,7 +7,7 @@
         <!-- About Page Section -->
         <header id="main-header">
             <div class="header-container">
-                <button id="about-button" onclick="location.href='./about.html'">About The Game</button>
+                <button id="about-button">About The Game</button>
             </div>
         </header>
 
@@ -96,8 +96,19 @@
         const buttonClickSound = document.getElementById('button-click-sound');
         const gameStartSound = document.getElementById('game-start-sound');
         const startButton = document.getElementById('start-game');
+        const aboutButton = document.getElementById('about-button');
 
         backgroundMusic.play();
+
+        aboutButton.addEventListener('click', () => {
+            // Play the button click sound
+            buttonClickSound.play();
+
+            // Delay the navigation to allow the sound to play
+            setTimeout(() => {
+                location.href = './about.html';
+            }, 80);
+        });
 
         startButton.addEventListener('click', () => {
             // Play the button click and game start sound

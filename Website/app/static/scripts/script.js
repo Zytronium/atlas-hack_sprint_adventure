@@ -271,7 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutButton = document.getElementById('about-button'); // Reference the About button
     const startButton = document.getElementById('start-game');
     const landingPage = document.getElementById('landing-page');
-    const gameplayPage = document.getElementById('gameplay-page');
 
     // Hide the About button when the game starts
     startButton.addEventListener('click', () => {

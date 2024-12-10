@@ -30,7 +30,7 @@
     <header id="main-header">
         <div class="header-container">
             <h1 class="game-title">About Astralis</h1>
-            <button id="back-button" onclick="location.href='./index.html'">Back to Game</button>
+            <button id="back-button">Back to Game</button>
         </div>
     </header>
 
@@ -61,5 +61,18 @@
             <h4><a href="https://zytronium.itch.io/astralis-text-adventure">Click here to download the mobile app version from itch.io</a> (Android only)</h4>
         </section>
     </main>
+
+    <script>
+        // Play a click sound on clicking the back button
+        document.getElementById("back-button").addEventListener("click", function () {
+            document.getElementById("button-click-sound").play();
+
+            // Delay the navigation to allow the sound to play
+            setTimeout(() => {
+                location.href = './index.html';
+            }, 80);
+        });
+    </script>
+
 </body>
 </html>
