@@ -50,6 +50,7 @@ function playMusic () {
     themeMusic.play().then(() => {
         console.log("Background music started.");
         clickToStart.style.opacity = '1';
+        clickToStart.textContent = 'Now playing: "Wormholes" by @DerekBrandonFiechter on YouTube';
 
         // Fade out the "Click to start" text
         const fadeOut = setInterval(() => {
