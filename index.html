@@ -4,121 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astralis: The Text Adventure</title>
-        <!-- About Page Section -->
-        <header id="main-header">
-            <div class="header-container">
-                <button id="about-button">About The Game</button>
-            </div>
-        </header>
+    <!-- About Page Section -->
+    <header id="main-header">
+        <div class="header-container">
+            <button id="about-button">About The Game</button>
+        </div>
+    </header>
 
     <!-- Import Firebase SDKs -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import {
+            getAnalytics
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-      // Your Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
-        authDomain: "text-adventure-55f7e.firebaseapp.com",
-        databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
-        projectId: "text-adventure-55f7e",
-        storageBucket: "text-adventure-55f7e.firebasestorage.app",
-        messagingSenderId: "721830400936",
-        appId: "1:721830400936:web:ef55d79e24c4024217439d",
-        measurementId: "G-Y55FLGNH5V"
-      };
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNrRd5BLu25Iva2a-l2KL2EHWkvhb1lyw",
+            authDomain: "text-adventure-55f7e.firebaseapp.com",
+            databaseURL: "https://text-adventure-55f7e-default-rtdb.firebaseio.com",
+            projectId: "text-adventure-55f7e",
+            storageBucket: "text-adventure-55f7e.firebasestorage.app",
+            messagingSenderId: "721830400936",
+            appId: "1:721830400936:web:ef55d79e24c4024217439d",
+            measurementId: "G-Y55FLGNH5V"
+        };
 
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      const db = getFirestore(app);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
 
-      // Export the Firestore db instance to use in other modules
-      window.db = db;  // Making the db available globally for other scripts
+        // Export the Firestore db instance to use in other modules
+        window.db = db;  // Making the db available globally for other scripts
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="./Website/app/static/css/styles.css">
 </head>
 <body>
-    <!-- Video Background -->
-    <video id="background-video" autoplay loop muted playsinline>
-        <source src="./Website/app/static/video/background.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+<!-- Video Background -->
+<video id="background-video" autoplay loop muted playsinline>
+    <source src="./Website/app/static/video/background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
 
-    <!-- Background Music -->
-    <audio id="theme-music" loop>
-        <source src="./Website/app/static/sounds/theme-music.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-    </audio>
+<!-- Background Music -->
+<audio id="theme-music" loop>
+    <source src="./Website/app/static/sounds/theme-music.mp3"
+            type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio>
 
-    <!-- Button Click Sound -->
-    <audio id="button-click-sound">
-        <source src="./Website/app/static/sounds/button_click.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-    </audio>
+<!-- Button Click Sound -->
+<audio id="button-click-sound">
+    <source src="./Website/app/static/sounds/button_click.mp3"
+            type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio>
 
-    <!-- Game Start Sound -->
-    <audio id="game-start-sound">
-        <source src="./Website/app/static/sounds/universe_entrance.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-    </audio>
+<!-- Game Start Sound -->
+<audio id="game-start-sound">
+    <source src="./Website/app/static/sounds/universe_entrance.mp3"
+            type="audio/mpeg"/>
+    Your browser does not support the audio element.
+</audio>
 
-    <!-- Landing Page Section -->
-    <section id="landing-page" class="section">
-        <div class="container">
-            <h1>Astralis: The Text Adventure</h1>
-            <p>Venture into the unknown, where choices forge your path among the stars.</p>
-            <button id="start-game">Step Into The Void</button>
+<!-- Landing Page Section -->
+<section id="landing-page" class="section">
+    <div class="container">
+        <h1>Astralis: The Text Adventure</h1>
+        <p>Venture into the unknown, where choices forge your path among the
+            stars.</p>
+        <button id="start-game">Step Into The Void</button>
+    </div>
+</section>
+
+<!-- Gameplay Page Section (Initially Hidden) -->
+<section id="gameplay-page" class="section hidden">
+    <div class="game-container">
+        <div id="game-text">
+            Loading...
         </div>
-    </section>
-
-    <!-- Gameplay Page Section (Initially Hidden) -->
-    <section id="gameplay-page" class="section hidden">
-        <div class="game-container">
-            <div id="game-text">
-                Loading...
-            </div>
-            <div id="choices">
-                <!-- Dynamic choices will be added here -->
-            </div>
+        <div id="choices">
+            <!-- Dynamic choices will be added here -->
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Main Script -->
-    <script type="module" src="./Website/app/static/scripts/script.js"></script>
+<!-- Main Script -->
+<script type="module" src="./Website/app/static/scripts/script.js"></script>
 
-    <script>
-        // Play the button click sound when the button is clicked
-        const backgroundMusic = document.getElementById('theme-music');
-        const buttonClickSound = document.getElementById('button-click-sound');
-        const gameStartSound = document.getElementById('game-start-sound');
-        const startButton = document.getElementById('start-game');
-        const aboutButton = document.getElementById('about-button');
+<script>
+    // Play the button click sound when the button is clicked
+    const backgroundMusic = document.getElementById('theme-music');
+    const buttonClickSound = document.getElementById('button-click-sound');
+    const gameStartSound = document.getElementById('game-start-sound');
+    const startButton = document.getElementById('start-game');
+    const aboutButton = document.getElementById('about-button');
 
-        backgroundMusic.play();
+    backgroundMusic.play();
 
-        aboutButton.addEventListener('click', () => {
-            // Play the button click sound
-            buttonClickSound.play();
+    aboutButton.addEventListener('click', () => {
+        // Play the button click sound
+        buttonClickSound.play();
 
-            // Delay the navigation to allow the sound to play
-            setTimeout(() => {
-                location.href = './about.html';
-            }, 80);
-        });
+        // Delay the navigation to allow the sound to play
+        setTimeout(() => {
+            location.href = './about.html';
+        }, 80);
+    });
 
-        startButton.addEventListener('click', () => {
-            // Play the button click and game start sound
-            buttonClickSound.play();
-            gameStartSound.play();
+    startButton.addEventListener('click', () => {
+        // Play the button click and game start sound
+        buttonClickSound.play();
+        gameStartSound.play();
 
-            // Hide the landing page and show the gameplay page
-            document.getElementById('landing-page').classList.add('hidden');
-            document.getElementById('gameplay-page').classList.remove('hidden');
-        });
-    </script>
+        // Hide the landing page and show the gameplay page
+        document.getElementById('landing-page').classList.add('hidden');
+        document.getElementById('gameplay-page').classList.remove('hidden');
+    });
+</script>
 </body>
 </html>
