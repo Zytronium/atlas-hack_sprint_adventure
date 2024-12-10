@@ -51,7 +51,7 @@
 }
 
 #back-button {
-    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     font-size: 1rem;
     font-family: 'Orbitron', sans-serif;
     background-color: #ffcc00;
@@ -60,7 +60,8 @@
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    margin-right: 0%;
+    margin-right: 2rem;
+    margin-top: 1.45rem;
 }
 
 #back-button:hover {
