@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Play background music on hover over background (workaround anti-autoplay feature for Chromium)
-    page.addEventListener('mouseenter', () => {
+    page.addEventListener('mouseover', () => {
         backgroundMusic.play();
     });
 
