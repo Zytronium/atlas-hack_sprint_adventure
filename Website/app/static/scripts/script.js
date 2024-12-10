@@ -271,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const aboutButton = document.getElementById('about-button'); // Reference the About button
     const startButton = document.getElementById('start-game');
     const landingPage = document.getElementById('landing-page');
+    const page = document.getElementById('landing-page');
 
     // Hide the About button when the game starts
     startButton.addEventListener('click', () => {
@@ -284,9 +285,9 @@ document.addEventListener('DOMContentLoaded', () => {
         aboutButton.style.display = 'block'; // Show About button
     }
 
-    backgroundMusic.play();
-
-
-    console.log('Test 123'); // Test to see if GitHub Pages has updated yet
+    // Play background music on hover over background (workaround anti-autoplay feature for Chromium)
+    page.addEventListener('mouseenter', () => {
+        backgroundMusic.play();
+    });
 
 });
