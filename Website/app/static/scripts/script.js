@@ -286,11 +286,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Play background music on hover over background (workaround anti-autoplay feature for Chromium)
-    page.addEventListener('mousemove', () => {
-        backgroundMusic.play();
-    });
+    document.addEventListener('click', () => {
+        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+    }, { once: true });
 
+    document.addEventListener('mousemove', () => {
+        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+    }, { once: true });
 
-    console.log('Loaded script.js');
+    document.addEventListener('mouseover', () => {
+        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+    }, { once: true });
+
+    document.addEventListener('scroll', () => {
+        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+    }, { once: true });
+
+    document.addEventListener('fullscreenchange', () => {
+        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+    }, { once: true });
 
 });
