@@ -22,6 +22,46 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const clickToStart = document.getElementById('click-to-start');
+const muteButton = document.getElementById('mute-button');
+const soundIcon = document.getElementById('sound-icon');
+const themeMusic = document.getElementById('theme-music');
+let isMuted = false;
+
+// Attempt to play music
+playMusic();
+
+// Attach mute toggle to the button
+muteButton.addEventListener('click', toggleMute);
+
+// Function to toggle mute
+function toggleMute () {
+    isMuted = !isMuted;
+    themeMusic.muted = isMuted;
+    soundIcon.src = isMuted
+        ? './Website/app/static/icons/sound_off.png'
+        : './Website/app/static/icons/sound_on.png';
+}
+
+function playMusic () {
+    themeMusic.play().then(() => {
+        console.log("Background music started.");
+        clickToStart.style.opacity = '1';
+
+        // Fade out the "Click to start" text
+        const fadeOut = setInterval(() => {
+            if (clickToStart.style.opacity > 0) {
+                clickToStart.style.opacity -= '0.0075';
+            } else {
+                clearInterval(fadeOut);
+                clickToStart.style.display = 'none';
+                muteButton.style.display = 'block'; // Show mute button
+            }
+        }, 10);
+    }).catch(error => {
+        console.error("Audio playback failed:", error);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('start-game');
@@ -67,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove the video after it ends
             rickrollVideo.addEventListener('ended', () => {
                     rickrollContainer.remove();
-                    themeMusic.play();
+                    playMusic()
                 }
             );
 
@@ -285,25 +325,14 @@ document.addEventListener('DOMContentLoaded', () => {
         aboutButton.style.display = 'block'; // Show About button
     }
 
-    // Play background music on hover over background (workaround anti-autoplay feature for Chromium)
+    // Play background music on hover over background (partial workaround anti-autoplay feature on most browsers)
     document.addEventListener('click', () => {
-        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+        themeMusic.play().catch(error => console.error("Audio play failed:", error));
     }, { once: true });
 
     document.addEventListener('mousemove', () => {
-        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
+        themeMusic.play().catch(error => console.error("Audio play failed:", error));
     }, { once: true });
 
-    document.addEventListener('mouseover', () => {
-        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
-    }, { once: true });
-
-    document.addEventListener('scroll', () => {
-        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
-    }, { once: true });
-
-    document.addEventListener('fullscreenchange', () => {
-        backgroundMusic.play().catch(error => console.error("Audio play failed:", error));
-    }, { once: true });
 
 });
