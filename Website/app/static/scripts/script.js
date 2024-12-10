@@ -283,4 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (landingPage.style.display !== 'none') {
         aboutButton.style.display = 'block'; // Show About button
     }
+
+    backgroundMusic.play();
 });
