@@ -32,7 +32,10 @@ let isMuted = false;
 playMusic();
 
 // Attach mute toggle to the button
-muteButton.addEventListener('click', toggleMute);
+muteButton.addEventListener('click', () => {
+    buttonClickSound.play()
+    toggleMute();
+});
 
 // Function to toggle mute
 function toggleMute () {
@@ -327,11 +330,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Play background music on hover over background (partial workaround anti-autoplay feature on most browsers)
     document.addEventListener('click', () => {
-        themeMusic.play().catch(error => console.error("Audio play failed:", error));
+        playMusic();
     }, { once: true });
 
     document.addEventListener('mousemove', () => {
-        themeMusic.play().catch(error => console.error("Audio play failed:", error));
+        playMusic();
     }, { once: true });
 
 
