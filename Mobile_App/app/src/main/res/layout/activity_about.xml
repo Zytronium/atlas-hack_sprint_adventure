@@ -93,6 +93,15 @@
                 android:text="Developed by &quot;Zytronium,&quot; John Wilson, Khiry Dixon-Manning.\n\nThis game was built using Kotlin, XML, and Firebase to provide a rich, interactive experience."
                 android:textColor="#FFFFFF" />
 
+            <TextView
+                android:id="@+id/assets_credits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="The background music, titled &quot;Wormholes,&quot; was made by &quot;@DerekBrandonFiechter&quot; on YouTube. The background animation was recorded by moewalls.com."
+                android:textColor="#FFFFFF" />
+
             <!-- About Developers Section -->
             <TextView
                 android:id="@+id/about_developers_title"
