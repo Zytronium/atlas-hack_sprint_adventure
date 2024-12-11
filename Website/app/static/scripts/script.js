@@ -27,6 +27,8 @@ const muteButton = document.getElementById('mute-button');
 const soundIcon = document.getElementById('sound-icon');
 const themeMusic = document.getElementById('theme-music');
 let isMuted = false;
+let typing = false;
+let typingSpeed = 1; // 1 = normal, 2 = fast, 3+ = instant
 
 // Attempt to play music
 playMusic();
@@ -234,8 +236,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add typewriter effect for text with proper handling of interruptions
-  function typeText (element, text, speed = 40) {
-    let index = 0; // Index for the current character
+  function typeText (element, text, initialSpeed = 40, idx = 0) {
+    let index = idx; // Index for the current character
+    let speed = initialSpeed;
+    switch(typingSpeed) {
+      case 1:
+        break; // speed = initialSpeed
+
+      case 2:
+        speed = initialSpeed / 5; // 5 times faster typing speed
+        break;
+
+      default: // >= 3
+        speed = 0; // instant
+        break;
+    }
+
+    gameplayPage.addEventListener('click', event => {
+      typingSpeed++;
+      console.log(typingSpeed);
+      window.typingInterval = setInterval(() => {
+        if (typingSpeed >= 3) {
+          clearInterval(window.typingInterval); // Stop once all text is displayed
+          window.typingInterval = null;
+          typingSpeed = 1; // Reset typingSpeed
+          element.textContent = text;
+          index = text.length;
+        } else if (index < text.length) {
+          element.textContent += text[index]; // Add next character
+          index++;
+        } else {
+          clearInterval(window.typingInterval); // Stop once all text is displayed
+          window.typingInterval = null;
+          typingSpeed = 1; // Reset typingSpeed
+        }
+      }, speed);
+    })
+
     element.textContent = ''; // Clear existing text
     if (window.typingInterval) {
       clearInterval(window.typingInterval); // Clear any existing typing interval
@@ -249,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         clearInterval(window.typingInterval); // Stop once all text is displayed
         window.typingInterval = null;
+        typingSpeed = 1; // Reset typingSpeed
       }
     }, speed);
   }
