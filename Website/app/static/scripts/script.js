@@ -265,11 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
     typingInterval = setInterval(typeChar, currentSpeed);
 
     // Speed control handler
-    element.addEventListener('click', () => {
+    gameplayPage.addEventListener('click', () => {
       if (isTyping) {
         if (currentSpeed === initialSpeed) {
-          // Speed up typing
-          currentSpeed = initialSpeed / 5;
+          // Speed up typing 3 times
+          currentSpeed = initialSpeed / 3;
         } else {
           // Finish typing instantly
           clearInterval(typingInterval);
