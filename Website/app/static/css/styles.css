@@ -1,4 +1,4 @@
-/* Basic page layout */
+/* Basic Page Layout */
 body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
@@ -52,6 +52,7 @@ body {
     transform: scale(1.1);
 }
 
+/* General Elements Styles */
 #background-video {
     position: fixed;
     top: 0;
@@ -216,7 +217,7 @@ body {
     * differently than hash values in this file. The first 2 characters in colors.xml are
     * for the transparency, while the last 2 here are for that.
     */
-    background-color: rgba(199, 0, 0, 0.33); /* red tint */
+    background-color: rgba(199, 0, 0, 0.33); /* red tint for bad ending */
     position: fixed;
     top: 0;
     left: 0;
@@ -227,7 +228,29 @@ body {
 
 /* Green Tint Overlay for Good Ending */
 .green-tint {
-    background-color: rgba(0, 217, 0, 0.33); /* green tint */
+    background-color: rgba(0, 217, 0, 0.33); /* green tint for good ending */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Pastel-blue Tint Overlay for Neutral Ending */
+.faint-red-tint {
+    background-color: rgba(207, 0, 0, 0.15); /* faint red tint for 'bad' story type */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Pastel-blue Tint Overlay for Neutral Ending */
+.faint-green-tint {
+    background-color: rgba(31, 204, 0, 0.15); /* faint gree tint for 'good' story type */
     position: fixed;
     top: 0;
     left: 0;
@@ -238,7 +261,7 @@ body {
 
 /* Pastel-blue Tint Overlay for Neutral Ending */
 .pastel-blue-tint {
-    background-color: rgba(153, 185, 194, 0.25); /* light pastel-blue tint */
+    background-color: rgba(153, 185, 194, 0.25); /* light pastel-blue tint for neutral ending */
     position: fixed;
     top: 0;
     left: 0;
