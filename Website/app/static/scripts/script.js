@@ -50,12 +50,12 @@ function playMusic () {
   themeMusic.play().then(() => {
     console.log('Background music started.');
     clickToStart.style.opacity = '1';
-    clickToStart.textContent = 'Now playing: "Wormholes" by @DerekBrandonFiechter on YouTube';
+    clickToStart.textContent = 'Now playing: "Wormholes" by @DerekBrandonFiechter on YouTube.';
 
     // Fade out the "Click to start" text
     const fadeOut = setInterval(() => {
       if (clickToStart.style.opacity > 0) {
-        clickToStart.style.opacity -= '0.0075';
+        clickToStart.style.opacity -= '0.0055';
       } else {
         clearInterval(fadeOut);
         clickToStart.style.display = 'none';
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeTint(); // Remove any existing tint
 
     // Rickroll for specific path
-    if (path === '02134') {
+    if (path === '02134') { // Y'all can't count. It's 01234, not 02134.
       // Stop the theme music
       if (themeMusic) {
         themeMusic.pause();
