@@ -236,60 +236,57 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add typewriter effect for text with proper handling of interruptions
-  function typeText (element, text, initialSpeed = 40, idx = 0) {
-    let index = idx; // Index for the current character
-    let speed = initialSpeed;
-    switch (typingSpeed) {
-      case 1:
-        break; // speed = initialSpeed
+  function typeText(element, text, initialSpeed = 40) {
+    let index = 0;
+    let typingInterval = null;
+    let currentSpeed = initialSpeed;
+    let isTyping = true;
 
-      case 2:
-        speed = initialSpeed / 5; // 5 times faster typing speed
-        break;
-
-      default: // >= 3
-        speed = 0; // instant
-        break;
+    // Clear previous intervals to prevent overlaps
+    if (typingInterval) {
+      clearInterval(typingInterval);
     }
 
-    gameplayPage.addEventListener('click', event => {
-      typingSpeed++;
-      console.log(typingSpeed);
-      window.typingInterval = setInterval(() => {
-        if (typingSpeed >= 3) {
-          clearInterval(window.typingInterval); // Stop once all text is displayed
-          window.typingInterval = null;
-          typingSpeed = 1; // Reset typingSpeed
-          element.textContent = text;
-          index = text.length;
-        } else if (index < text.length) {
-          element.textContent += text[index]; // Add next character
-          index++;
-        } else {
-          clearInterval(window.typingInterval); // Stop once all text is displayed
-          window.typingInterval = null;
-          typingSpeed = 1; // Reset typingSpeed
-        }
-      }, speed);
-    });
+    // Reset the element content and typing state
+    element.textContent = '';
+    isTyping = true;
 
-    element.textContent = ''; // Clear existing text
-    if (window.typingInterval) {
-      clearInterval(window.typingInterval); // Clear any existing typing interval
-    }
-
-    // Start typing effect
-    window.typingInterval = setInterval(() => {
+    // Define the typing function
+    const typeChar = () => {
       if (index < text.length) {
-        element.textContent += text[index]; // Add next character
+        element.textContent += text.charAt(index);
         index++;
       } else {
-        clearInterval(window.typingInterval); // Stop once all text is displayed
-        window.typingInterval = null;
-        typingSpeed = 1; // Reset typingSpeed
+        // Stop typing when the text is fully displayed
+        clearInterval(typingInterval);
+        isTyping = false;
       }
-    }, speed);
+    };
+
+    // Start typing at the specified speed
+    typingInterval = setInterval(typeChar, currentSpeed);
+
+    // Speed control handler
+    element.addEventListener('click', () => {
+      if (isTyping) {
+        if (currentSpeed === initialSpeed) {
+          // Speed up typing
+          currentSpeed = initialSpeed / 5;
+        } else {
+          // Finish typing instantly
+          clearInterval(typingInterval);
+          element.textContent = text;
+          isTyping = false;
+        }
+        // Apply new speed if still typing
+        if (isTyping) {
+          clearInterval(typingInterval);
+          typingInterval = setInterval(typeChar, currentSpeed);
+        }
+      }
+    });
   }
+
 
   function removeTint () {
     const tint = gameplayPage.querySelector('.faint-red-tint, .faint-green-tint, .red-tint, .green-tint, .pastel-blue-tint');
