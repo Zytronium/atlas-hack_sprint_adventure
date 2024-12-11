@@ -27,6 +27,8 @@ const muteButton = document.getElementById('mute-button');
 const soundIcon = document.getElementById('sound-icon');
 const themeMusic = document.getElementById('theme-music');
 let isMuted = false;
+const typing = false;
+let typingSpeed = 1; // 1 = normal, 2 = fast, 3+ = instant
 
 // Attempt to play music
 playMusic();
@@ -130,11 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!docSnap.exists()) {
         console.error('No game state document found!');
         addEndingTint('Error');
-        typeText({
-          element: gameText,
-          text: 'Error 404: Story doc not found.',
-          charIntervalNormal: 12.5
-        }); // Set game text to indicate 404 error.
+        typeText(gameText, 'Error 404: Story doc not found.', 12.5);
         return;
       }
 
@@ -146,11 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.error(`No game state found for path: ${path}`); // Log error in console
         addEndingTint('Error');
-        typeText({
-          element: gameText,
-          text: `Error 404: Story event not found.${addedText}`,
-          charIntervalNormal: 2.5
-        }); // Set game text to indicate 404 error.
+        typeText(gameText, `Error 404: Story event not found.${addedText}`, 12.5); // Set game text to indicate 404 error.
         addEndingButtons(path);
         return;
       }
@@ -159,11 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       console.error('Error loading game state: ', error);
       addEndingTint('Error');
-      typeText({
-        element: gameText,
-        text: 'An error occurred while loading the game state.',
-        charIntervalNormal: 2.5
-      });
+      typeText(gameText, 'An error occurred while loading the game state.', 12.5);
       addEndingButtons(path);
     }
   }
@@ -171,11 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Process and display the game state
   function handleGameState (gameState, currentPath) {
     // Use typewriter effect for text
-    typeText({
-      element: gameText,
-      text: gameState.storyText,
-      charIntervalNormal: 25
-    });
+    typeText(gameText, gameState.storyText, 25);
 
     console.log(gameState.type);
     if (['Bad', 'Good'].includes(gameState.type)) {
@@ -250,116 +236,59 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Add typewriter effect for text with proper handling of interruptions
-  function typeText({
-                      element,
-                      text,
-                      charIntervalNormal = 25,
-                      charIntervalFast = 5,
-                      pauseTimeNormal = 250,
-                      pauseTimeFast = 50,
-                      pauseChar = "║",
-                      typingSpeed = 1, // Default typing speed
-                      autoPauseOnPunctuation = true,
-                      punctuationPauseMap = {
-                        ",": 50,
-                        ".": 100,
-                        ";": 75,
-                        ":": 100,
-                        "?": 115,
-                        "!": 115,
-                        "—": 100, // Long dash
-                        "\n": 250
-                      },
-                      typingPath = Symbol("typingPath"),
-                      typeProgress = 0
-                    }) {
-    // Ensure required properties are present
-    if (!text || typeof text !== "string") {
-      console.error(`The 'text' parameter is required and must be a string. text value: ${typeText.text}`);
-      return;
-    }
-    if (!element || !(element instanceof HTMLElement)) {
-      console.error("The 'element' parameter is required and must be a valid HTMLElement.");
-      return;
+  function typeText (element, text, initialSpeed = 40, idx = 0) {
+    let index = idx; // Index for the current character
+    let speed = initialSpeed;
+    switch (typingSpeed) {
+      case 1:
+        break; // speed = initialSpeed
+
+      case 2:
+        speed = initialSpeed / 5; // 5 times faster typing speed
+        break;
+
+      default: // >= 3
+        speed = 0; // instant
+        break;
     }
 
-    // Initialize active paths if not already defined
-    if (!typeText.activePaths) {
-      typeText.activePaths = new Map();
+    gameplayPage.addEventListener('click', event => {
+      typingSpeed++;
+      console.log(typingSpeed);
+      window.typingInterval = setInterval(() => {
+        if (typingSpeed >= 3) {
+          clearInterval(window.typingInterval); // Stop once all text is displayed
+          window.typingInterval = null;
+          typingSpeed = 1; // Reset typingSpeed
+          element.textContent = text;
+          index = text.length;
+        } else if (index < text.length) {
+          element.textContent += text[index]; // Add next character
+          index++;
+        } else {
+          clearInterval(window.typingInterval); // Stop once all text is displayed
+          window.typingInterval = null;
+          typingSpeed = 1; // Reset typingSpeed
+        }
+      }, speed);
+    });
+
+    element.textContent = ''; // Clear existing text
+    if (window.typingInterval) {
+      clearInterval(window.typingInterval); // Clear any existing typing interval
     }
 
-    // Stop if the message is fully typed or typing path changed
-    if (typeProgress >= text.length || typeText.activePaths.get(element) !== typingPath) {
-      typeText.activePaths.delete(element);
-      return;
-    }
-
-    // Initialize the element's text content if starting from scratch
-    if (typeProgress === 0) {
-      element.textContent = ""; // Clear text
-      typeText.activePaths.set(element, typingPath); // Register this typing path
-    }
-
-    const currentChar = text[typeProgress];
-    let delay = 0;
-
-    // Handle instant typing speed
-    if (typingSpeed >= 3) {
-      element.textContent = text.replace(new RegExp(pauseChar, "g"), "");
-      typeText.activePaths.delete(element);
-      return;
-    }
-
-    // Handle pause characters
-    if (currentChar === pauseChar) {
-      delay = typingSpeed === 1 ? pauseTimeNormal : pauseTimeFast;
-      setTimeout(() => {
-        typeText({
-          element,
-          text,
-          charIntervalNormal,
-          charIntervalFast,
-          pauseTimeNormal,
-          pauseTimeFast,
-          pauseChar,
-          typingSpeed,
-          autoPauseOnPunctuation,
-          punctuationPauseMap,
-          typingPath,
-          typeProgress: typeProgress + 1
-        });
-      }, delay);
-      return;
-    }
-
-    // Handle normal typing intervals
-    delay = typingSpeed === 1 ? charIntervalNormal : charIntervalFast;
-
-    // Handle punctuation pauses
-    if (autoPauseOnPunctuation && punctuationPauseMap[currentChar]) {
-      delay += typingSpeed === 1 ? punctuationPauseMap[currentChar] : punctuationPauseMap[currentChar] / 5;
-    }
-
-    // Type the current character
-    element.textContent += currentChar;
-
-    // Schedule the next character
-    setTimeout(() => {
-      typeText({
-        element,
-        text,
-        charIntervalNormal,
-        charIntervalFast,
-        pauseTimeNormal,
-        pauseTimeFast,
-        pauseChar,
-        typingSpeed,
-        autoPauseOnPunctuation,
-        punctuationPauseMap,
-        typingPath,
-        typeProgress: typeProgress + 1
-      });
-    }, delay);
+    // Start typing effect
+    window.typingInterval = setInterval(() => {
+      if (index < text.length) {
+        element.textContent += text[index]; // Add next character
+        index++;
+      } else {
+        clearInterval(window.typingInterval); // Stop once all text is displayed
+        window.typingInterval = null;
+        typingSpeed = 1; // Reset typingSpeed
+      }
+    }, speed);
   }
 
   function removeTint () {
