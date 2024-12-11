@@ -27,8 +27,7 @@ const muteButton = document.getElementById('mute-button');
 const soundIcon = document.getElementById('sound-icon');
 const themeMusic = document.getElementById('theme-music');
 let isMuted = false;
-const typing = false;
-let typingSpeed = 1; // 1 = normal, 2 = fast, 3+ = instant
+let typingInterval = null;
 
 // Attempt to play music
 playMusic();
@@ -238,7 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add typewriter effect for text with proper handling of interruptions
   function typeText(element, text, initialSpeed = 40) {
     let index = 0;
-    let typingInterval = null;
     let currentSpeed = initialSpeed;
     let isTyping = true;
 
