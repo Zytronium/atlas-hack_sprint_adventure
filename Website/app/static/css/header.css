@@ -1,3 +1,10 @@
+a:link {
+    color: #008afa;
+}
+a:visited {
+    color: #a100ff;
+}
+
 .main-header {
     position: relative;
     top: 0;
